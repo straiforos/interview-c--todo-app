@@ -22,3 +22,5 @@ Architecture Decision Records (ADRs) capture the important architectural decisio
 - [ADR 0016: Development Environment Setup Workflow](./0016-env-setup-workflow.md)
 - [ADR 0017: Generic CRUD Interfaces and Base REST Controller](./0017-generic-crud-architecture.md)
 - [ADR 0018: Aspect-Oriented Notifications](./0018-aspect-oriented-notifications.md)
+- [ADR 0019: Exception Handling via Action Filters](./0019-exception-filters.md)
+- [ADR 0020: Dynamic Permission-Based Authorization](./0020-permission-authorization.md)

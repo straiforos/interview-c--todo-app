@@ -10,49 +10,49 @@ todos:
     status: completed
   - id: init-projects
     content: Initialize .NET Web API and Vite React projects
-    status: in_progress
+    status: completed
   - id: backend-db-models
     content: "Backend: Setup EF Core PostgreSQL, Models (User, TaskItem), and Initial Migration"
-    status: pending
+    status: completed
   - id: backend-auth
     content: "Backend: Implement JWT Auth and User Context"
-    status: pending
+    status: completed
   - id: backend-dtos-validation
     content: "Backend: Implement DTOs, AutoMapper, and Data Annotations"
-    status: pending
+    status: completed
   - id: backend-services-controllers
     content: "Backend: Implement TaskService, SignalR Hub, Media/Blob Storage, and thin Controllers"
-    status: pending
+    status: completed
   - id: backend-rls
     content: "Backend: Configure EF Core Interceptor and PostgreSQL RLS Policies"
-    status: pending
+    status: completed
   - id: backend-error-swagger
     content: "Backend: Add Global Exception Handling Middleware and Swagger"
-    status: pending
+    status: completed
   - id: frontend-setup
     content: "Frontend: Setup Tailwind, Radix UI, RxJS, and shared components"
-    status: pending
+    status: completed
   - id: frontend-auth-ui
     content: "Frontend: Build Auth UI (Login/Register) with validation and error states"
-    status: pending
+    status: completed
   - id: frontend-todo-ui
     content: "Frontend: Build Task UI (List, Create, Edit) with Rich Text Editor (incl. media upload), Date Picker, and loading/empty states"
-    status: pending
+    status: completed
   - id: testing-backend
     content: "Testing: Add Backend Integration Tests (WebApplicationFactory) with Testcontainers for PostgreSQL"
-    status: pending
+    status: completed
   - id: testing-frontend
     content: "Testing: Add Frontend Component Tests"
-    status: pending
+    status: completed
   - id: docs-readme
     content: "Documentation: Write comprehensive README (Setup, Assumptions, Scalability, Future)"
-    status: pending
+    status: completed
   - id: docs-gh-pages
     content: "CI/CD: Setup GitHub Actions workflow to publish VitePress docs to GitHub Pages"
-    status: pending
+    status: completed
   - id: docs-bruno
     content: "Documentation: Create Bruno API collection for testing"
-    status: pending
+    status: completed
 isProject: false
 ---
 
