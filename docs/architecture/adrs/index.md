@@ -17,3 +17,8 @@ Architecture Decision Records (ADRs) capture the important architectural decisio
 - [ADR 0011: PostgreSQL Row Level Security (RLS)](./0011-postgres-rls.md)
 - [ADR 0012: Real-time Notifications with SignalR](./0012-signalr-notifications.md)
 - [ADR 0013: Media Blob Storage Strategy](./0013-blob-storage.md)
+- [ADR 0014: Environment-Driven Secret Management](./0014-secret-management.md)
+- [ADR 0015: 12-Factor App Methodology](./0015-12-factor-app.md)
+- [ADR 0016: Development Environment Setup Workflow](./0016-env-setup-workflow.md)
+- [ADR 0017: Generic CRUD Interfaces and Base REST Controller](./0017-generic-crud-architecture.md)
+- [ADR 0018: Aspect-Oriented Notifications](./0018-aspect-oriented-notifications.md)

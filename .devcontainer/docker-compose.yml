@@ -8,6 +8,11 @@ services:
     network_mode: service:db
     depends_on:
       - db
+    environment:
+      - ConnectionStrings__DefaultConnection=${ConnectionStrings__DefaultConnection:-Host=db;Database=taskdb;Username=postgres;Password=postgres}
+      - Jwt__Key=${Jwt__Key:-DevelopmentSecretKey_ChangeThisInProduction_MustBeLongEnough}
+    env_file:
+      - ../TaskManagement.Api/.env.development
 
   db:
     image: postgres:18-alpine

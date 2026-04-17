@@ -1,0 +1,17 @@
+using AutoMapper;
+using TaskManagement.Api.DTOs;
+using TaskManagement.Api.Models;
+
+namespace TaskManagement.Api.Data;
+
+public class MappingProfile : Profile
+{
+    public MappingProfile()
+    {
+        CreateMap<TaskItem, TaskDto>();
+        CreateMap<CreateTaskDto, TaskItem>();
+        CreateMap<UpdateTaskDto, TaskItem>();
+
+        CreateMap<MediaItem, MediaDto>();
+    }
+}
