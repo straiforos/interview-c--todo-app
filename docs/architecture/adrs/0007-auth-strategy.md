@@ -4,7 +4,7 @@
 Accepted
 
 ## Context
-The application requires secure user authentication (AuthN) and strict data isolation (AuthZ) to ensure users can only access their own Todo items. Aligning the .NET implementation with established security concepts (like `ClaimsPrincipal` and `Claims`) provides a clear mental model. Furthermore, to maintain strict control over API contracts (DTOs) and avoid returning internal structures, we need to avoid opaque built-in endpoints that don't allow customization of the response format.
+The application requires secure user authentication (AuthN) and strict data isolation (AuthZ) to ensure users can only access their own Task items. Aligning the .NET implementation with established security concepts (like `ClaimsPrincipal` and `Claims`) provides a clear mental model. Furthermore, to maintain strict control over API contracts (DTOs) and avoid returning internal structures, we need to avoid opaque built-in endpoints that don't allow customization of the response format.
 
 ## Decision
 We will implement the following security architecture:

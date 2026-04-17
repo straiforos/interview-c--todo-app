@@ -1,6 +1,6 @@
-# Todo App
+# Task Management App
 
-A production-ready Todo application built with .NET 10 and React 19, designed to demonstrate strong architectural fundamentals, clean code, and robust error handling.
+A production-ready Task Management application built with .NET 10 and React 19, designed to demonstrate strong architectural fundamentals, clean code, and robust error handling.
 
 ## Overview
 
@@ -32,8 +32,10 @@ npm run docs:dev
 *(Instructions will be updated once the backend and frontend projects are initialized)*
 
 ## Architecture Highlights
-- **Backend**: .NET 10 Web API, PostgreSQL 18, Entity Framework Core, AutoMapper, OpenAPI/Swagger.
-- **Frontend**: React 19, Vite 8, Tailwind CSS 4.2, Radix UI, RxJS (Service-Oriented Architecture).
-- **Data Isolation**: JWT authentication ensures users can only access their own data.
+- **Backend**: .NET 10 Web API, PostgreSQL 18 (with RLS), Entity Framework Core, AutoMapper, SignalR, OpenAPI/Swagger, Abstracted Blob Storage.
+- **Frontend**: React 19, Vite 8, Tailwind CSS 4.2, Radix UI, RxJS (Service-Oriented Architecture), SignalR Client.
+- **Data Isolation**: Bulletproof security using PostgreSQL Row Level Security (RLS) policies.
+- **Real-time Features**: WebSockets via SignalR for instant task assignment notifications.
+- **Rich Media**: Abstracted blob storage for embedding images, videos, and GIFs inside task descriptions.
 - **API Testing**: Includes a fully configured Bruno collection for seamless endpoint testing.
 - **Error Handling**: Global exception handling on the backend and consistent error states on the frontend.

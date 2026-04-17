@@ -9,7 +9,7 @@ Providing an effortless way for other developers to interact with the API is a h
 ## Decision
 We will provide two methods for API exploration and testing:
 1. **OpenAPI (Swagger)**: We will configure .NET 10's OpenAPI support to generate a Swagger UI. This will be configured to accept JWT Bearer tokens so endpoints can be tested directly from the browser.
-2. **Bruno Collection**: We will include a `bruno` directory in the root of the repository containing a [Bruno](https://www.usebruno.com/) API collection. Bruno is an open-source, plain-text API client. The collection will include all endpoints (Auth, Todos) and a configured environment that automatically extracts the JWT from the Login response and applies it to subsequent requests.
+2. **Bruno Collection**: We will include a `bruno` directory in the root of the repository containing a [Bruno](https://www.usebruno.com/) API collection. Bruno is an open-source, plain-text API client. The collection will include all endpoints (Auth, Tasks) and a configured environment that automatically extracts the JWT from the Login response and applies it to subsequent requests.
 
 ## Consequences
 - **Positive**: Bruno collections are stored as plain text, making them perfectly suited for Git version control (unlike Postman's opaque JSON exports). Developers have multiple, frictionless ways to test the API.

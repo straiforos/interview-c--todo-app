@@ -1,6 +1,6 @@
 # Architecture Overview
 
-This section outlines the high-level architecture of the Todo application. The system is divided into a frontend React application and a backend .NET 10 Web API.
+This section outlines the high-level architecture of the Task Management application. The system is divided into a frontend React application and a backend .NET 10 Web API.
 
 ## System Context
 
@@ -15,7 +15,7 @@ The application follows a standard client-server architecture:
 The backend is structured to prevent "over-architecting" while maintaining clean separation of concerns:
 
 - **Controllers**: Thin entry points that handle HTTP requests/responses and route them to services.
-- **Services**: Contain the core business logic and enforce data ownership (e.g., ensuring users only access their own todos).
+- **Services**: Contain the core business logic and enforce data ownership (e.g., ensuring users only access their own tasks).
 - **DTOs (Data Transfer Objects)**: Define the API contracts. EF Core entities are *never* exposed directly to the frontend.
 - **AutoMapper**: Handles mapping between internal domain entities and external DTOs.
 - **Data Annotations**: Enforces strict input validation rules directly on the DTOs before requests reach the service layer.

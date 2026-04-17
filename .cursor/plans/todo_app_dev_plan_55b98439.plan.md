@@ -1,6 +1,6 @@
 ---
-name: Todo App Dev Plan
-overview: A production-ready Todo application using .NET Core and React, featuring a DevContainer setup, clean DTO architecture, robust validation, proper data isolation with authentication, and comprehensive documentation.
+name: Task Management App Dev Plan
+overview: A production-ready Task Management application using .NET 10 and React 19, featuring a DevContainer setup, clean DTO architecture, robust validation, PostgreSQL Row Level Security (RLS) for data isolation, real-time notifications via SignalR, and comprehensive documentation.
 todos:
   - id: docs-vitepress
     content: Setup VitePress documentation and ADRs
@@ -12,7 +12,7 @@ todos:
     content: Initialize .NET Web API and Vite React projects
     status: pending
   - id: backend-db-models
-    content: "Backend: Setup EF Core PostgreSQL, Models (User, TodoItem), and Initial Migration"
+    content: "Backend: Setup EF Core PostgreSQL, Models (User, TaskItem), and Initial Migration"
     status: pending
   - id: backend-auth
     content: "Backend: Implement JWT Auth and User Context"
@@ -21,7 +21,10 @@ todos:
     content: "Backend: Implement DTOs, AutoMapper, and Data Annotations"
     status: pending
   - id: backend-services-controllers
-    content: "Backend: Implement TodoService (enforcing data ownership) and thin Controllers"
+    content: "Backend: Implement TaskService, SignalR Hub, Media/Blob Storage, and thin Controllers"
+    status: pending
+  - id: backend-rls
+    content: "Backend: Configure EF Core Interceptor and PostgreSQL RLS Policies"
     status: pending
   - id: backend-error-swagger
     content: "Backend: Add Global Exception Handling Middleware and Swagger"
@@ -33,7 +36,7 @@ todos:
     content: "Frontend: Build Auth UI (Login/Register) with validation and error states"
     status: pending
   - id: frontend-todo-ui
-    content: "Frontend: Build Todo UI (List, Create, Edit) with loading/empty states"
+    content: "Frontend: Build Task UI (List, Create, Edit) with Rich Text Editor (incl. media upload), Date Picker, and loading/empty states"
     status: pending
   - id: testing-backend
     content: "Testing: Add Backend Integration Tests (WebApplicationFactory) with Testcontainers for PostgreSQL"
@@ -53,7 +56,7 @@ todos:
 isProject: false
 ---
 
-# Todo App Implementation Plan
+# Task Management App Implementation Plan
 
 The goal is to build a "small, production-quality project" that demonstrates strong fundamentals without over-architecting. We will focus on clean architecture, robust error handling, proper data isolation (auth), and a polished frontend experience.
 
@@ -66,23 +69,26 @@ The goal is to build a "small, production-quality project" that demonstrates str
 
 - **Database**: PostgreSQL 18 with Entity Framework Core.
 - **Migrations Strategy**: EF Core Migrations will be used to manage the database schema. To ensure a seamless developer experience, migrations will be automatically applied on application startup in the `Program.cs` development environment block.
-- **Authentication & Data Ownership**: Implement JWT-based authentication using ASP.NET Core Identity and custom endpoints. An `ICurrentUserService` will extract the user's identity from the `ClaimsPrincipal`. The `TodoService` will strictly enforce that users can only read, update, or delete their own tasks.
+- **Authentication & Data Ownership (RLS)**: Implement JWT-based authentication. Data isolation will be enforced at the database level using **PostgreSQL Row Level Security (RLS)**. An EF Core Interceptor will inject the current user's ID into the database session (`SET LOCAL app.current_user_id`), making accidental data leaks impossible.
+- **Real-time Notifications**: Integrate **SignalR** to push real-time WebSocket notifications when a user is assigned a task.
 - **Architecture**:
-  - **Models**: `User` and `TodoItem`.
-  - **DTOs**: Use separate DTOs for different operations (`TodoDto`, `CreateTodoDto`, `UpdateTodoDto`) to ensure clear API contracts and prevent over-posting. EF entities are never returned.
+  - **Models**: `User`, `TaskItem` (with `CreatorId`, `AssigneeId`, `DueDate`, and `RichTextContent`), and `Notification`.
+  - **Blob Storage**: An `IStorageService` abstraction for handling rich text media uploads (images, videos, GIFs), implemented locally via `wwwroot` for the MVP but designed to be cloud-ready (e.g., AWS S3).
+  - **DTOs**: Use separate DTOs for different operations (`TaskDto`, `CreateTaskDto`, `UpdateTaskDto`) to ensure clear API contracts and prevent over-posting. EF entities are never returned.
   - **AutoMapper**: For clean mapping between Entities and DTOs.
-  - **Services**: Business logic will live in `TodoService` to keep controllers thin.
+  - **Services**: Business logic will live in `TaskService` to keep controllers thin.
 - **Validation**: Use built-in **ASP.NET Core Data Annotations** (`[Required]`, `[MaxLength]`) directly on the separate DTOs. This provides standard, zero-dependency input validation that automatically integrates with Swagger and the ASP.NET Core pipeline.
 - **Error Handling**: Implement a Global Exception Handling Middleware to return consistent `ProblemDetails` responses (ensuring correct 404s, 400s, etc.).
 - **API Docs & Testing**: Configure OpenAPI (Swagger) with JWT support. Create a **Bruno** collection in the repository with pre-configured requests and environment variables for seamless API testing.
 
 ## 3. Frontend (React + TypeScript)
 
-- **Tooling**: Vite 8, Tailwind CSS v4.2, Radix UI Primitives, React Router.
+- **Tooling**: Vite 8, Tailwind CSS v4.2, Radix UI Primitives, React Router, `@microsoft/signalr`, a Rich Text Editor library (e.g., TipTap or Quill).
 - **Architecture & State**: Service-Oriented Architecture (SOA) using **RxJS**. Business logic and API calls are abstracted into singleton services. React components subscribe to RxJS Observables for state updates (loading, error, data).
 - **Features**:
   - **Auth**: Login and Registration flows.
-  - **Todos**: List, Create, Edit, Delete, and Toggle status.
+  - **Tasks**: List, Create, Edit, Delete, Toggle status, Assign to Users, and manage **Due Dates** and **Rich Text Content** (with embedded media uploads).
+  - **Notifications**: Real-time toast notifications and an inbox for task assignments, powered by SignalR and RxJS.
   - **UX**: Clear loading skeletons/spinners, error toasts, and empty states. Edge cases handled (e.g., keeping form data on submission failure).
 - **Modularity**: Build a robust `shared` components library using Radix UI primitives styled with Tailwind CSS, ensuring accessibility and reusability across the app.
 

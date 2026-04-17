@@ -3,9 +3,9 @@
 layout: home
 
 hero:
-  name: "Todo App Docs"
+  name: "Task App Docs"
   text: "Architecture & Developer Guide"
-  tagline: "Production-ready .NET 10 & React 19 Todo Application"
+  tagline: "Production-ready .NET 10 & React 19 Task Management Application"
   actions:
     - theme: brand
       text: View Architecture

@@ -6,7 +6,7 @@ Accepted
 
 ## Context
 
-The project requires building a Todo application to demonstrate production-ready coding practices. The chosen stack is .NET Core and React. We want to ensure we are using the absolute latest stable versions available in 2026.
+The project requires building a Task Management application to demonstrate production-ready coding practices. The chosen stack is .NET Core and React. We want to ensure we are using the absolute latest stable versions available in 2026.
 
 ## Decision
 

@@ -14,3 +14,6 @@ Architecture Decision Records (ADRs) capture the important architectural decisio
 - [ADR 0008: Documentation Deployment Strategy](./0008-docs-deployment.md)
 - [ADR 0009: Validation Strategy and DTO Design](./0009-validation-strategy.md)
 - [ADR 0010: API Documentation and Testing Strategy](./0010-api-docs-and-testing.md)
+- [ADR 0011: PostgreSQL Row Level Security (RLS)](./0011-postgres-rls.md)
+- [ADR 0012: Real-time Notifications with SignalR](./0012-signalr-notifications.md)
+- [ADR 0013: Media Blob Storage Strategy](./0013-blob-storage.md)

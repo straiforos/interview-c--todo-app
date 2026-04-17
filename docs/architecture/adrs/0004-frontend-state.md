@@ -4,7 +4,7 @@
 Accepted
 
 ## Context
-The frontend needs a robust way to manage state, handle asynchronous data fetching, and clearly separate business logic from presentation components. While standard React hooks or libraries like TanStack Query are common, encapsulating logic in a Service-Oriented Architecture (SOA) provides superior decoupling and testability.
+The frontend needs a robust way to manage state, handle asynchronous data fetching, and clearly separate business logic from presentation components. While standard React hooks or libraries like TanStack Query are common, encapsulating logic in a Service-Oriented Architecture (SOA) provides superior decoupling and testability for a Task MVP.
 
 ## Decision
 We will implement a **Service-Oriented Architecture (SOA)** on the frontend and use **RxJS** for state management. 
