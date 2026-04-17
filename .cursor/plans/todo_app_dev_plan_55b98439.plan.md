@@ -7,10 +7,10 @@ todos:
     status: completed
   - id: setup-devcontainer
     content: Setup DevContainer with .NET 10, Node.js 24, and PostgreSQL 18 (via docker-compose)
-    status: pending
+    status: completed
   - id: init-projects
     content: Initialize .NET Web API and Vite React projects
-    status: pending
+    status: in_progress
   - id: backend-db-models
     content: "Backend: Setup EF Core PostgreSQL, Models (User, TaskItem), and Initial Migration"
     status: pending
