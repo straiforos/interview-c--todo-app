@@ -1,0 +1,16 @@
+# Architecture Decision Records
+
+Architecture Decision Records (ADRs) capture the important architectural decisions made along with their context and consequences.
+
+## Current Records
+
+- [ADR 0001: Use .NET 10 Web API and React 19](./0001-tech-stack.md)
+- [ADR 0002: Use PostgreSQL 18 with EF Core](./0002-database-choice.md)
+- [ADR 0003: DTOs and AutoMapper](./0003-dtos-and-mapping.md)
+- [ADR 0004: Service-Oriented Architecture and RxJS](./0004-frontend-state.md)
+- [ADR 0005: EF Core Migrations Strategy](./0005-ef-core-migrations.md)
+- [ADR 0006: Radix UI and Shared Components](./0006-radix-shared-components.md)
+- [ADR 0007: Authentication and Authorization Strategy](./0007-auth-strategy.md)
+- [ADR 0008: Documentation Deployment Strategy](./0008-docs-deployment.md)
+- [ADR 0009: Validation Strategy and DTO Design](./0009-validation-strategy.md)
+- [ADR 0010: API Documentation and Testing Strategy](./0010-api-docs-and-testing.md)
