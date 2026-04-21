@@ -11,7 +11,11 @@
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
         "bradlc.vscode-tailwindcss",
-        "usebruno.vscode-bruno"
+        "usebruno.vscode-bruno",
+        "eamodio.gitlens",
+        "mhutchie.git-graph",
+        "christian-kohler.path-intellisense",
+        "visualstudioexptteam.vscodeintellicode"
       ]
     }
   },
