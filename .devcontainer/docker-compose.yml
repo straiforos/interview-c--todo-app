@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: sleep infinity
     volumes:
       - ..:/workspace:cached
     network_mode: service:db
