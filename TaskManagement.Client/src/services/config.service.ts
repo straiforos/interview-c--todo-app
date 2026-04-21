@@ -20,26 +20,27 @@ class ConfigService {
       return config;
     } catch (error) {
       console.error('Error loading runtime configuration:', error);
-      // Fallback for local development if config.json is missing
-      const fallback: AppConfig = {
-        apiUrl: 'http://localhost:5000/api',
-        wsUrl: 'http://localhost:5000/hubs/notifications'
-      };
-      this.configSubject.next(fallback);
-      return fallback;
+      throw error;
     }
   }
 
+  private get config(): AppConfig {
+    if (!this.configSubject.value) {
+      throw new Error('Configuration not loaded. Ensure configService.loadConfig() is called and awaited at application startup.');
+    }
+    return this.configSubject.value;
+  }
+
   public get apiUrl(): string {
-    return this.configSubject.value?.apiUrl || 'http://localhost:5000/api';
+    return this.config.apiUrl;
   }
 
   public get wsUrl(): string {
-    return this.configSubject.value?.wsUrl || 'http://localhost:5000/hubs/notifications';
+    return this.config.wsUrl;
   }
 
   public isFeatureEnabled(featureKey: string): boolean {
-    return !!this.configSubject.value?.features?.[featureKey];
+    return !!this.config.features?.[featureKey];
   }
 }
 
