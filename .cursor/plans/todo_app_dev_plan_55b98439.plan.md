@@ -1,6 +1,6 @@
 ---
 name: Task Management App Dev Plan
-overview: A production-ready Task Management application using .NET 10 and React 19, featuring a DevContainer setup, clean DTO architecture, robust validation, PostgreSQL Row Level Security (RLS) for data isolation, real-time notifications via SignalR, and comprehensive documentation.
+overview: A production-ready Task Management application using .NET 10 and React 19, featuring a DevContainer setup, clean DTO architecture (demonstrating List vs Detail patterns), robust validation, PostgreSQL Row Level Security (RLS) for data isolation, and comprehensive documentation.
 todos:
   - id: docs-vitepress
     content: Setup VitePress documentation and ADRs
@@ -18,10 +18,10 @@ todos:
     content: "Backend: Implement JWT Auth and User Context"
     status: completed
   - id: backend-dtos-validation
-    content: "Backend: Implement DTOs, AutoMapper, and Data Annotations"
+    content: "Backend: Implement DTOs (TaskSummaryDto vs TaskDto), AutoMapper, and Data Annotations"
     status: completed
   - id: backend-services-controllers
-    content: "Backend: Implement TaskService, SignalR Hub, Media/Blob Storage, and thin Controllers"
+    content: "Backend: Implement TaskService, SignalR Hub, and thin Controllers"
     status: completed
   - id: backend-rls
     content: "Backend: Configure EF Core Interceptor and PostgreSQL RLS Policies"
@@ -36,7 +36,7 @@ todos:
     content: "Frontend: Build Auth UI (Login/Register) with validation and error states"
     status: completed
   - id: frontend-todo-ui
-    content: "Frontend: Build Task UI (List, Create, Edit) with Rich Text Editor (incl. media upload), Date Picker, and loading/empty states"
+    content: "Frontend: Build Task UI (List using Summary DTO, Detail using Full DTO) and loading/empty states"
     status: completed
   - id: testing-backend
     content: "Testing: Add Backend Integration Tests (WebApplicationFactory) with Testcontainers for PostgreSQL"
@@ -72,9 +72,8 @@ The goal is to build a "small, production-quality project" that demonstrates str
 - **Authentication & Data Ownership (RLS)**: Implement JWT-based authentication. Data isolation will be enforced at the database level using **PostgreSQL Row Level Security (RLS)**. An EF Core Interceptor will inject the current user's ID into the database session (`SET LOCAL app.current_user_id`), making accidental data leaks impossible.
 - **Real-time Notifications**: Integrate **SignalR** to push real-time WebSocket notifications when a user is assigned a task.
 - **Architecture**:
-  - **Models**: `User`, `TaskItem` (with `CreatorId`, `AssigneeId`, `DueDate`, and `RichTextContent`), and `Notification`.
-  - **Blob Storage**: An `IStorageService` abstraction for handling rich text media uploads (images, videos, GIFs), implemented locally via `wwwroot` for the MVP but designed to be cloud-ready (e.g., AWS S3).
-  - **DTOs**: Use separate DTOs for different operations (`TaskDto`, `CreateTaskDto`, `UpdateTaskDto`) to ensure clear API contracts and prevent over-posting. EF entities are never returned.
+  - **Models**: `User`, `TaskItem` (with `CreatorId`, `AssigneeId`, and audit fields), and `Notification`.
+  - **DTOs**: Use separate DTOs for different operations (`TaskSummaryDto` for lists, `TaskDto` for details, `CreateTaskDto`, `UpdateTaskDto`) to demonstrate the DTO pattern for performance and data encapsulation. EF entities are never returned.
   - **AutoMapper**: For clean mapping between Entities and DTOs.
   - **Services**: Business logic will live in `TaskService` to keep controllers thin.
 - **Validation**: Use built-in **ASP.NET Core Data Annotations** (`[Required]`, `[MaxLength]`) directly on the separate DTOs. This provides standard, zero-dependency input validation that automatically integrates with Swagger and the ASP.NET Core pipeline.
@@ -83,11 +82,11 @@ The goal is to build a "small, production-quality project" that demonstrates str
 
 ## 3. Frontend (React + TypeScript)
 
-- **Tooling**: Vite 8, Tailwind CSS v4.2, Radix UI Primitives, React Router, `@microsoft/signalr`, a Rich Text Editor library (e.g., TipTap or Quill).
+- **Tooling**: Vite 8, Tailwind CSS v4.2, Radix UI Primitives, React Router, `@microsoft/signalr`.
 - **Architecture & State**: Service-Oriented Architecture (SOA) using **RxJS**. Business logic and API calls are abstracted into singleton services. React components subscribe to RxJS Observables for state updates (loading, error, data).
 - **Features**:
   - **Auth**: Login and Registration flows.
-  - **Tasks**: List, Create, Edit, Delete, Toggle status, Assign to Users, and manage **Due Dates** and **Rich Text Content** (with embedded media uploads).
+  - **Tasks**: List (using `TaskSummaryDto`), Detail/Edit view (fetching full `TaskDto`), Create, Delete, Toggle status, and assign to Users.
   - **Notifications**: Real-time toast notifications and an inbox for task assignments, powered by SignalR and RxJS.
   - **UX**: Clear loading skeletons/spinners, error toasts, and empty states. Edge cases handled (e.g., keeping form data on submission failure).
 - **Modularity**: Build a robust `shared` components library using Radix UI primitives styled with Tailwind CSS, ensuring accessibility and reusability across the app.

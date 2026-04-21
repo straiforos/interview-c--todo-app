@@ -12,11 +12,35 @@ public class AppDbContext : IdentityDbContext<User>
 
     public DbSet<TaskItem> Tasks => Set<TaskItem>();
     public DbSet<Notification> Notifications => Set<Notification>();
-    public DbSet<MediaItem> MediaItems => Set<MediaItem>();
+    public DbSet<Permission> Permissions => Set<Permission>();
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        builder.Entity<Permission>(entity =>
+        {
+            entity.Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(100);
+            
+            entity.HasIndex(p => p.Name)
+                .IsUnique();
+        });
+
+        builder.Entity<RolePermission>(entity =>
+        {
+            entity.HasKey(rp => new { rp.RoleId, rp.PermissionId });
+
+            entity.HasOne(rp => rp.Role)
+                .WithMany()
+                .HasForeignKey(rp => rp.RoleId);
+
+            entity.HasOne(rp => rp.Permission)
+                .WithMany(p => p.RolePermissions)
+                .HasForeignKey(rp => rp.PermissionId);
+        });
 
         builder.Entity<TaskItem>(entity =>
         {
@@ -31,14 +55,6 @@ public class AppDbContext : IdentityDbContext<User>
                 .OnDelete(DeleteBehavior.SetNull);
         });
 
-        builder.Entity<MediaItem>(entity =>
-        {
-            entity.HasOne(m => m.Creator)
-                .WithMany()
-                .HasForeignKey(m => m.CreatorId)
-                .OnDelete(DeleteBehavior.Restrict);
-        });
-
         builder.Entity<Notification>(entity =>
         {
             entity.HasOne(n => n.User)
@@ -49,6 +65,5 @@ public class AppDbContext : IdentityDbContext<User>
 
         // Global Soft Delete Filter
         builder.Entity<TaskItem>().HasQueryFilter(t => !t.IsDeleted);
-        builder.Entity<MediaItem>().HasQueryFilter(m => !m.IsDeleted);
     }
 }

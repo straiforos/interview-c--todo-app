@@ -10,6 +10,7 @@ namespace TaskManagement.Api.Services;
 
 public interface ITaskService : ICrudService<TaskItem, TaskDto, CreateTaskDto, UpdateTaskDto>
 {
+    Task<IEnumerable<TaskSummaryDto>> GetAllSummariesAsync();
 }
 
 public class TaskService : CrudService<TaskItem, TaskDto, CreateTaskDto, UpdateTaskDto>, ITaskService
@@ -25,6 +26,15 @@ public class TaskService : CrudService<TaskItem, TaskDto, CreateTaskDto, UpdateT
     {
         _context = context;
         _currentUserService = currentUserService;
+    }
+
+    public async Task<IEnumerable<TaskSummaryDto>> GetAllSummariesAsync()
+    {
+        var userId = _currentUserService.UserId;
+        var tasks = await _context.Tasks
+            .Where(t => t.CreatorId == userId || t.AssigneeId == userId)
+            .ToListAsync();
+        return _mapper.Map<IEnumerable<TaskSummaryDto>>(tasks);
     }
 
     public override async Task<IEnumerable<TaskDto>> GetAllAsync()

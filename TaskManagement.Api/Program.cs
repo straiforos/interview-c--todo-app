@@ -8,11 +8,18 @@ using TaskManagement.Api.Models;
 using TaskManagement.Api.Services;
 using TaskManagement.Api.Interceptors;
 using Scalar.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddMemoryCache();
+
+// Authorization
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
 builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer((document, context, cancellationToken) =>
@@ -47,7 +54,6 @@ builder.Services.AddScoped(typeof(IDeleteService<>), sp => sp.GetRequiredService
 
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IStorageService, LocalFileStorageService>();
 builder.Services.AddSignalR();
 
 // Database

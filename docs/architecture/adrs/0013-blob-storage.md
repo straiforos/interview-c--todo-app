@@ -2,11 +2,11 @@
 
 ## Status
 
-Accepted
+Superseded by [ADR 0021: Simplified Scope and DTO Pattern](./0021-simplified-scope.md)
 
 ## Context
 
-The Task Management application supports rich text content, which includes embedded media such as images, videos, and GIFs. Storing large binary files directly in the PostgreSQL database (e.g., as `bytea`) is an anti-pattern that bloats the database and degrades performance. We need a scalable strategy for handling media uploads and serving them to the frontend.
+The Task Management application initially considered supporting rich text content and media. However, to focus on the DTO pattern and clean architecture for the interview take-home, this feature was removed.
 
 ## Decision
 

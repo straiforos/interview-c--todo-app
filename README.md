@@ -47,24 +47,22 @@ A production-ready Task Management application built with **.NET 10** and **Reac
 - **PostgreSQL Row Level Security (RLS)**: Data isolation is enforced at the database engine level. Accidental data leaks are impossible as the DB rejects queries not matching the session's `app.current_user_id`.
 - **JWT Authentication**: Secure, stateless authentication using ASP.NET Core Identity.
 - **SignalR**: Real-time WebSocket notifications when tasks are assigned.
-- **Clean DTO Architecture**: Strict separation between EF entities and API contracts using AutoMapper and separate DTOs for each operation.
-- **Abstracted Blob Storage**: Media uploads (images/videos) are handled via an `IStorageService` abstraction, making the app cloud-ready.
+- **Clean DTO Architecture**: Demonstrates the DTO pattern by using lightweight `TaskSummaryDto` for lists and detailed `TaskDto` for single-item views, optimizing payload size and data encapsulation.
+- **Generic CRUD & AOP**: Uses a generic repository/service pattern and Aspect-Oriented Programming (EF Core Interceptors and Action Filters) for cross-cutting concerns.
 
 ### Frontend
 - **Service-Oriented Architecture (SOA)**: Business logic and API communication are encapsulated in singleton services.
 - **RxJS State Management**: Services expose state via Observables, providing a reactive and highly decoupled UI.
 - **Radix UI & Tailwind CSS**: Accessible, unstyled primitives paired with modern utility-first styling.
-- **Rich Text Editor**: Support for embedded media and formatted task descriptions.
 
 ## 📝 Assumptions & Trade-offs
 - **Local Storage for JWT**: For this MVP, the JWT is stored in `localStorage`. In a high-security production app, `HttpOnly` cookies would be preferred to mitigate XSS risks.
-- **Local File Storage**: Media is stored in `wwwroot/uploads` for the MVP. The architecture is designed to swap this for AWS S3 or Azure Blob Storage by changing one line in `Program.cs`.
 - **Auto-Migrations**: The app auto-migrates on startup in Development mode for a seamless reviewer experience. In production, migrations would be part of a CI/CD pipeline.
 
 ## 📈 Scalability & Future Work
+- **Rich Text & Media**: The architecture is ready to support rich text content and blob storage (e.g., AWS S3) for media attachments.
 - **Microservices**: The clear separation of the Task and Notification logic makes it easy to split these into microservices if needed.
 - **Caching**: Implement Redis for distributed caching of frequent queries.
-- **Search**: Integrate Elasticsearch for full-text search across rich text task content.
 - **Testing**: Expand integration test coverage to include SignalR hubs and RLS policy edge cases.
 
 ## 🛠️ API Testing
