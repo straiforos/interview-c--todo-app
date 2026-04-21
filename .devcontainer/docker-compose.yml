@@ -6,15 +6,24 @@ services:
     command: sleep infinity
     volumes:
       - ..:/workspace:cached
-    network_mode: service:db
     depends_on:
       - db
     environment:
-      - ConnectionStrings__DefaultConnection=${ConnectionStrings__DefaultConnection:-Host=db;Database=taskdb;Username=postgres;Password=postgres}
-      - Jwt__Key=${Jwt__Key:-DevelopmentSecretKey_ChangeThisInProduction_MustBeLongEnough}
-    env_file:
-      - path: ../TaskManagement.Api/.env.development
-        required: false
+      - ConnectionStrings__DefaultConnection=Host=db;Database=taskdb;Username=postgres;Password=postgres
+      - Jwt__Key=DevelopmentSecretKey_ChangeThisInProduction_MustBeLongEnough
+      - Jwt__Issuer=TaskFlowApp
+      - Jwt__Audience=TaskFlowApp
+
+  ui:
+    image: node:24-slim
+    command: sh -c "cd /workspace/TaskManagement.Client && npm install && npm run dev -- --host"
+    volumes:
+      - ..:/workspace:cached
+    working_dir: /workspace/TaskManagement.Client
+    environment:
+      - VITE_API_URL=http://localhost:5000/api
+    depends_on:
+      - app
 
   db:
     image: postgres:18-alpine
@@ -23,5 +32,3 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=taskdb
-    ports:
-      - "5433:5432"

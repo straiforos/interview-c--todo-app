@@ -130,4 +130,6 @@ app.MapControllers();
 app.MapHub<NotificationHub>("/hubs/notifications");
 app.UseStaticFiles();
 
+app.Urls.Add("http://0.0.0.0:5000");
+
 app.Run();

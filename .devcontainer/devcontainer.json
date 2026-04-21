@@ -1,5 +1,5 @@
 {
-  "name": "Task Management App",
+  "name": "TaskFlow App v2",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
@@ -20,5 +20,20 @@
     }
   },
   "remoteUser": "vscode",
-  "postCreateCommand": "if [ ! -f TaskManagement.Api/.env.development ]; then cp TaskManagement.Api/.env.example TaskManagement.Api/.env.development; fi && dotnet --version && node --version"
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "forwardPorts": [5000, 5173, 5432],
+  "portsAttributes": {
+    "5000": {
+      "label": "Backend API",
+      "onAutoForward": "notify"
+    },
+    "5173": {
+      "label": "Frontend Vite",
+      "onAutoForward": "openBrowser"
+    },
+    "5432": {
+      "label": "PostgreSQL",
+      "onAutoForward": "ignore"
+    }
+  }
 }
