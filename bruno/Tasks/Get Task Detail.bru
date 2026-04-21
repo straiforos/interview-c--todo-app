@@ -1,0 +1,20 @@
+meta {
+  name: Get Task Detail
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/tasks/{{taskId}}
+  body: none
+  auth: inherit
+}
+
+tests {
+  test("should return full detail DTO", function() {
+    const data = res.getBody();
+    expect(res.getStatus()).to.equal(200);
+    expect(data).to.have.property('description');
+    expect(data).to.have.property('createdAt');
+  });
+}
