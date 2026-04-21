@@ -1,0 +1,5 @@
+obj
+workspace.sln
+.env
+.env*
+bin
