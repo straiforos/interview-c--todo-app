@@ -1,7 +1,6 @@
-import { BehaviorSubject, Observable, tap, from, map, shareReplay } from 'rxjs';
-import { AuthResponse, UserDto } from '../types';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+import { BehaviorSubject, Observable, tap, from, shareReplay } from 'rxjs';
+import { AuthResponse } from '../types';
+import { configService } from './config.service';
 
 class AuthService {
   private currentUserSubject = new BehaviorSubject<AuthResponse | null>(this.getStoredUser());
@@ -23,7 +22,7 @@ class AuthService {
   }
 
   public login(credentials: any): Observable<AuthResponse> {
-    return from(fetch(`${API_URL}/auth/login`, {
+    return from(fetch(`${configService.apiUrl}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials)
@@ -40,7 +39,7 @@ class AuthService {
   }
 
   public register(data: any): Observable<AuthResponse> {
-    return from(fetch(`${API_URL}/auth/register`, {
+    return from(fetch(`${configService.apiUrl}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)

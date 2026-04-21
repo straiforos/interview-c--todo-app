@@ -1,8 +1,7 @@
-import { BehaviorSubject, Observable, from, map, shareReplay, switchMap, tap, of } from 'rxjs';
+import { BehaviorSubject, Observable, from, shareReplay, tap } from 'rxjs';
 import { TaskSummaryDto, TaskDto, CreateTaskDto, UpdateTaskDto } from '../types';
 import { authService } from './auth.service';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+import { configService } from './config.service';
 
 class TaskService {
   private tasksSubject = new BehaviorSubject<TaskSummaryDto[]>([]);
@@ -18,7 +17,7 @@ class TaskService {
   }
 
   public fetchTasks(): Observable<TaskSummaryDto[]> {
-    return from(fetch(`${API_URL}/tasks`, {
+    return from(fetch(`${configService.apiUrl}/tasks`, {
       headers: this.getHeaders()
     }).then(res => {
       if (!res.ok) throw new Error('Failed to fetch tasks');
@@ -34,7 +33,7 @@ class TaskService {
       this.taskCache.set(id, new BehaviorSubject<TaskDto | null>(null));
     }
 
-    return from(fetch(`${API_URL}/tasks/${id}`, {
+    return from(fetch(`${configService.apiUrl}/tasks/${id}`, {
       headers: this.getHeaders()
     }).then(res => {
       if (!res.ok) throw new Error('Failed to fetch task');
@@ -46,7 +45,7 @@ class TaskService {
   }
 
   public createTask(dto: CreateTaskDto): Observable<TaskDto> {
-    return from(fetch(`${API_URL}/tasks`, {
+    return from(fetch(`${configService.apiUrl}/tasks`, {
       method: 'POST',
       headers: this.getHeaders(),
       body: JSON.stringify(dto)
@@ -60,7 +59,7 @@ class TaskService {
   }
 
   public updateTask(id: number, dto: UpdateTaskDto): Observable<TaskDto> {
-    return from(fetch(`${API_URL}/tasks/${id}`, {
+    return from(fetch(`${configService.apiUrl}/tasks/${id}`, {
       method: 'PUT',
       headers: this.getHeaders(),
       body: JSON.stringify(dto)
@@ -79,7 +78,7 @@ class TaskService {
   }
 
   public deleteTask(id: number): Observable<void> {
-    return from(fetch(`${API_URL}/tasks/${id}`, {
+    return from(fetch(`${configService.apiUrl}/tasks/${id}`, {
       method: 'DELETE',
       headers: this.getHeaders()
     }).then(res => {

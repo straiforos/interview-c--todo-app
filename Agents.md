@@ -48,6 +48,10 @@ This document outlines the architectural standards, code quality requirements, a
     - Use `index.ts` as a **barrel file** (entry point) to export all types.
     - Each major type category should reside in its own file (e.g., `task.types.ts`, `auth.types.ts`).
     - All types and interfaces must be documented with **JSDoc** for better developer experience and IntelliSense.
+- **Frontend Configuration**:
+    - Follow the **12-Factor App** principle of "Build once, deploy anywhere."
+    - Use a `ConfigService` to fetch environment-specific settings from `/config.json` at runtime.
+    - Never use `import.meta.env` for environment-specific values like API URLs.
 - **Shared Components**: Use the **shadcn CLI** (`npx shadcn@latest add ...`) to manage Radix UI primitives in `src/components/ui`.
 - **Real-time**: Use **SignalR** for all real-time notifications.
 - **Secret Management**: Follow **Environment-Driven Secret Management**. No secrets in `appsettings.json`. Use the **Options Pattern** (`IOptions<T>`).
