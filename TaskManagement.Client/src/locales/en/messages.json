@@ -1,0 +1,10 @@
+{
+  "auth.logout": "Logout",
+  "lang.english": "English",
+  "lang.spanish": "Spanish",
+  "task.list.delete_confirm": "Are you sure you want to delete this task?",
+  "task.list.empty": "No tasks found. Create one to get started!",
+  "task.list.new_task": "New Task",
+  "task.list.subtitle": "Manage your personal tasks and assignments.",
+  "task.list.title": "Tasks"
+}

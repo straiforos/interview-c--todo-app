@@ -1,10 +1,13 @@
 import { Outlet, Link, useNavigate, useNavigation } from 'react-router';
 import { authService } from '../services/auth.service';
 import { Button } from '@/components/ui/button';
+import { LanguageSelect } from './LanguageSelect';
 import { useObservable } from '../hooks/useObservable';
 import { LogOut, CheckSquare, Loader2 } from 'lucide-react';
+import { useLingui } from '@lingui/react/macro';
 
 export function Layout() {
+  const { t } = useLingui();
   const user = useObservable(authService.currentUser$);
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -27,12 +30,14 @@ export function Layout() {
           </Link>
 
           <div className="flex items-center gap-4">
+            <LanguageSelect />
+
             <span className="text-sm text-muted-foreground hidden sm:inline-block">
               {user.email}
             </span>
             <Button variant="ghost" size="sm" onClick={handleLogout}>
               <LogOut className="h-4 w-4 mr-2" />
-              Logout
+              {t({ id: 'auth.logout', message: 'Logout' })}
             </Button>
           </div>
         </div>

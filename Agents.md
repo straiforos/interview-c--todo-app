@@ -53,6 +53,11 @@ This document outlines the architectural standards, code quality requirements, a
     - Use a `ConfigService` to fetch environment-specific settings from `/config.json` at runtime.
     - Never use `import.meta.env` for environment-specific values like API URLs.
 - **Shared Components**: Use the **shadcn CLI** (`npx shadcn@latest add ...`) to manage Radix UI primitives in `src/components/ui`.
+- **Internationalization (i18n)**:
+    - Use **LinguiJS** for all user-facing strings.
+    - Use the `t` macro from `useLingui()` for plain text.
+    - Use the `<Trans>` component from `@lingui/react` for complex JSX translations.
+    - Always run `npm run lingui:extract` after adding new strings and `npm run lingui:compile` before deployment.
 - **Real-time**: Use **SignalR** for all real-time notifications.
 - **Secret Management**: Follow **Environment-Driven Secret Management**. No secrets in `appsettings.json`. Use the **Options Pattern** (`IOptions<T>`).
 - **Documentation**: All major decisions must be recorded in the `docs/architecture/adrs` directory.

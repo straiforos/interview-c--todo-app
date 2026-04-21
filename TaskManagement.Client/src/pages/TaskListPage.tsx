@@ -6,8 +6,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { taskService } from '../services/task.service';
 import { Plus, Eye, Edit2, Trash2 } from 'lucide-react';
+import { useLingui } from '@lingui/react/macro';
 
 export const TaskListPage = React.memo(() => {
+  const { t } = useLingui();
   const initialTasks = useLoaderData() as TaskSummaryDto[];
   // Note: In a real app, we'd use useObservable(taskService.tasks$, initialTasks)
   // to stay reactive to SignalR or other updates.
@@ -30,7 +32,7 @@ export const TaskListPage = React.memo(() => {
   };
 
   const handleDelete = (id: number) => {
-    if (confirm('Are you sure you want to delete this task?')) {
+    if (confirm(t({ id: 'task.list.delete_confirm', message: 'Are you sure you want to delete this task?' }))) {
       taskService.deleteTask(id).subscribe(() => {
         setTasks(prev => prev.filter(t => t.id !== id));
       });
@@ -42,7 +44,7 @@ export const TaskListPage = React.memo(() => {
       {tasks.length === 0 ? (
         <Card className="border-dashed">
           <CardContent className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-            <p>No tasks found. Create one to get started!</p>
+            <p>{t({ id: 'task.list.empty', message: 'No tasks found. Create one to get started!' })}</p>
           </CardContent>
         </Card>
       ) : (
@@ -78,21 +80,21 @@ export const TaskListPage = React.memo(() => {
         ))
       )}
     </div>
-  ), [tasks]);
+  ), [tasks, t]);
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Tasks</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t({ id: 'task.list.title', message: 'Tasks' })}</h1>
           <p className="text-muted-foreground">
-            Manage your personal tasks and assignments.
+            {t({ id: 'task.list.subtitle', message: 'Manage your personal tasks and assignments.' })}
           </p>
         </div>
         <Button asChild>
           <Link to="/tasks/new">
             <Plus className="h-4 w-4 mr-2" />
-            New Task
+            {t({ id: 'task.list.new_task', message: 'New Task' })}
           </Link>
         </Button>
       </div>
@@ -103,3 +105,4 @@ export const TaskListPage = React.memo(() => {
 });
 
 TaskListPage.displayName = 'TaskListPage';
+
