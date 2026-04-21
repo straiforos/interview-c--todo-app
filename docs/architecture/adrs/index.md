@@ -25,3 +25,4 @@ Architecture Decision Records (ADRs) capture the important architectural decisio
 - [ADR 0019: Exception Handling via Action Filters](./0019-exception-filters.md)
 - [ADR 0020: Dynamic Permission-Based Authorization](./0020-permission-authorization.md)
 - [ADR 0021: Simplified Scope and DTO Pattern](./0021-simplified-scope.md)
+- [ADR 0022: Router-Driven Frontend Architecture with RxJS Resolvers](./0022-router-driven-frontend.md)
