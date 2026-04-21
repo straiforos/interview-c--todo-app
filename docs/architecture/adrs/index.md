@@ -26,3 +26,5 @@ Architecture Decision Records (ADRs) capture the important architectural decisio
 - [ADR 0020: Dynamic Permission-Based Authorization](./0020-permission-authorization.md)
 - [ADR 0021: Simplified Scope and DTO Pattern](./0021-simplified-scope.md)
 - [ADR 0022: Router-Driven Frontend Architecture with RxJS Resolvers](./0022-router-driven-frontend.md)
+- [ADR 0023: Internationalization with LinguiJS](./0023-linguijs-i18n.md)
+- [ADR 0024: Runtime Frontend Configuration (Build Once, Deploy Anywhere)](./0024-runtime-frontend-config.md)
