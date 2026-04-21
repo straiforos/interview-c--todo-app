@@ -16,5 +16,5 @@
     }
   },
   "remoteUser": "vscode",
-  "postCreateCommand": "dotnet --version && node --version"
+  "postCreateCommand": "if [ ! -f TaskManagement.Api/.env.development ]; then cp TaskManagement.Api/.env.example TaskManagement.Api/.env.development; fi && dotnet --version && node --version"
 }
