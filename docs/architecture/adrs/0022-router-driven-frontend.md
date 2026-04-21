@@ -20,7 +20,7 @@ We will implement a **Router-Driven Architecture** using `react-router` v7, inte
 3. **Memoization & Caching**:
   - **Service-Level Caching**: RxJS `shareReplay(1)` will be used in services to memoize API responses, preventing redundant network requests when navigating back and forth.
   - **Component-Level Memoization**: Use `React.memo`, `useMemo`, and `useCallback` at the parent/container component level to prevent unnecessary re-renders of complex views, keeping shared primitive components simple.
-4. **Shared Components Library**: Standardize UI using a `shared` directory containing Radix UI primitives styled with Tailwind CSS 4.2. These components will be pure and highly optimized.
+4. **Shared Components Library**: Standardize UI using a `ui` directory containing Radix UI primitives styled with Tailwind CSS 4.2, managed via the **shadcn CLI**. These components will be pure and highly optimized.
 5. **Declarative Loading/Error States**: Use React Router's `Navigation` state and `ErrorBoundary` components to handle transition states globally, keeping individual components focused on the "happy path."
 
 ## Consequences

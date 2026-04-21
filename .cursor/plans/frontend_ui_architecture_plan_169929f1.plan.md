@@ -4,25 +4,25 @@ overview: Implement a snappy, router-driven React frontend using React Router v7
 todos:
   - id: frontend-init
     content: Initialize Vite React project and install core dependencies (React Router, RxJS, Tailwind, Radix)
-    status: pending
+    status: completed
   - id: frontend-services
     content: Implement RxJS API Services (AuthService, TaskService) with shareReplay caching
-    status: pending
+    status: completed
   - id: frontend-shared-components
     content: Build Shared Component Library (Button, Input, Card, Checkbox)
-    status: pending
+    status: completed
   - id: frontend-routing
     content: Configure React Router with Loaders (Resolvers) for /tasks and /tasks/:id
-    status: pending
+    status: completed
   - id: frontend-auth-pages
     content: Implement Auth Pages (/login, /register) and protected route wrapper
-    status: pending
+    status: completed
   - id: frontend-task-list
     content: Implement Task List Page (/tasks) using TaskSummaryDto
-    status: pending
+    status: completed
   - id: frontend-task-detail
     content: Implement Task Detail Page (/tasks/:id) as a read-only view using TaskDto
-    status: pending
+    status: completed
   - id: frontend-task-form
     content: Implement Task Form Page (/tasks/new, /tasks/:id/edit) for creating and updating tasks
     status: pending

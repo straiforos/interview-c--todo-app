@@ -8,7 +8,7 @@ The frontend requires a consistent, accessible, and highly reusable set of UI co
 
 ## Decision
 We will use **Radix UI Primitives** as the foundation for our interactive UI elements. 
-Furthermore, we will establish a **Shared Components** architecture (`src/components/shared`). All base UI elements (like `Button`, `Dialog`, `Input`) will be built as reusable components wrapping Radix primitives and styled with Tailwind CSS. Feature-specific components will compose these shared elements.
+Furthermore, we will establish a **Shared Components** architecture (`src/components/ui`). All base UI elements (like `Button`, `Dialog`, `Input`) will be built as reusable components wrapping Radix primitives and styled with Tailwind CSS, managed via the **shadcn CLI**. Feature-specific components will compose these shared elements.
 
 ## Consequences
 - **Positive**: Guarantees WAI-ARIA compliance, keyboard navigation, and focus management out-of-the-box. The shared component library ensures visual consistency and accelerates feature development.

@@ -43,6 +43,12 @@ This document outlines the architectural standards, code quality requirements, a
     - Use **Action Filters** for cross-cutting concerns (e.g., `ApiExceptionFilter` for declarative error handling).
 - **Validation**: Use built-in **Data Annotations** directly on DTOs.
 - **Frontend State**: Use **RxJS** in services. Components should subscribe to Observables, not manage complex state or API calls directly.
+- **Frontend Types**: 
+    - Maintain a clean `src/types/` directory.
+    - Use `index.ts` as a **barrel file** (entry point) to export all types.
+    - Each major type category should reside in its own file (e.g., `task.types.ts`, `auth.types.ts`).
+    - All types and interfaces must be documented with **JSDoc** for better developer experience and IntelliSense.
+- **Shared Components**: Use the **shadcn CLI** (`npx shadcn@latest add ...`) to manage Radix UI primitives in `src/components/ui`.
 - **Real-time**: Use **SignalR** for all real-time notifications.
 - **Secret Management**: Follow **Environment-Driven Secret Management**. No secrets in `appsettings.json`. Use the **Options Pattern** (`IOptions<T>`).
 - **Documentation**: All major decisions must be recorded in the `docs/architecture/adrs` directory.
