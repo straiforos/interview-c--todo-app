@@ -1,7 +1,4 @@
 {
-  "apiUrl": "http://localhost:5000/api",
-  "wsUrl": "http://localhost:5000/hubs/notifications",
-  "features": {
-    "enableNotifications": true
-  }
+  "apiUrl": "/api",
+  "features": {}
 }

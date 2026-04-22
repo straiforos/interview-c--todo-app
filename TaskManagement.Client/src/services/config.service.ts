@@ -35,10 +35,6 @@ class ConfigService {
     return this.config.apiUrl;
   }
 
-  public get wsUrl(): string {
-    return this.config.wsUrl;
-  }
-
   public isFeatureEnabled(featureKey: string): boolean {
     return !!this.config.features?.[featureKey];
   }

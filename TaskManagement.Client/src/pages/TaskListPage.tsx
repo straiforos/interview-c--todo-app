@@ -13,7 +13,7 @@ export const TaskListPage = React.memo(() => {
   const { t } = useLingui();
   const initialTasks = useLoaderData() as TaskSummaryDto[];
   // Note: In a real app, we'd use useObservable(taskService.tasks$, initialTasks)
-  // to stay reactive to SignalR or other updates.
+  // to stay reactive to updates.
   const [tasks, setTasks] = React.useState(initialTasks);
 
   const handleToggle = (id: number, currentStatus: boolean) => {
