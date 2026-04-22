@@ -3,6 +3,7 @@ import { TaskSummaryDto, TaskDto, CreateTaskDto, UpdateTaskDto } from '../types'
 import { authService } from './auth.service';
 import { configService } from './config.service';
 import { ApiError } from './api.error';
+import { apiClient } from './api.client';
 
 class TaskService {
   private tasksSubject = new BehaviorSubject<TaskSummaryDto[]>([]);
@@ -17,13 +18,21 @@ class TaskService {
     };
   }
 
+  private async handleResponse(res: Response, errorMessage: string) {
+    if (!res.ok) {
+      throw new ApiError(res.status, errorMessage);
+    }
+    // DELETE requests might not have a body
+    if (res.status === 204 || res.headers.get('content-length') === '0') {
+      return null;
+    }
+    return res.json();
+  }
+
   public fetchTasks(): Observable<TaskSummaryDto[]> {
-    return from(fetch(`${configService.apiUrl}/tasks`, {
+    return from(apiClient(`${configService.apiUrl}/tasks`, {
       headers: this.getHeaders()
-    }).then(async res => {
-      if (!res.ok) throw new ApiError(res.status, 'Failed to fetch tasks');
-      return res.json();
-    })).pipe(
+    }).then(res => this.handleResponse(res, 'Failed to fetch tasks'))).pipe(
       tap(tasks => this.tasksSubject.next(tasks)),
       shareReplay(1)
     );
@@ -34,40 +43,31 @@ class TaskService {
       this.taskCache.set(id, new BehaviorSubject<TaskDto | null>(null));
     }
 
-    return from(fetch(`${configService.apiUrl}/tasks/${id}`, {
+    return from(apiClient(`${configService.apiUrl}/tasks/${id}`, {
       headers: this.getHeaders()
-    }).then(async res => {
-      if (!res.ok) throw new ApiError(res.status, 'Failed to fetch task');
-      return res.json();
-    })).pipe(
+    }).then(res => this.handleResponse(res, 'Failed to fetch task'))).pipe(
       tap(task => this.taskCache.get(id)!.next(task)),
       shareReplay(1)
     );
   }
 
   public createTask(dto: CreateTaskDto): Observable<TaskDto> {
-    return from(fetch(`${configService.apiUrl}/tasks`, {
+    return from(apiClient(`${configService.apiUrl}/tasks`, {
       method: 'POST',
       headers: this.getHeaders(),
       body: JSON.stringify(dto)
-    }).then(async res => {
-      if (!res.ok) throw new ApiError(res.status, 'Failed to create task');
-      return res.json();
-    })).pipe(
+    }).then(res => this.handleResponse(res, 'Failed to create task'))).pipe(
       tap(() => this.fetchTasks().subscribe()), // Refresh list
       shareReplay(1)
     );
   }
 
   public updateTask(id: number, dto: UpdateTaskDto): Observable<TaskDto> {
-    return from(fetch(`${configService.apiUrl}/tasks/${id}`, {
+    return from(apiClient(`${configService.apiUrl}/tasks/${id}`, {
       method: 'PUT',
       headers: this.getHeaders(),
       body: JSON.stringify(dto)
-    }).then(async res => {
-      if (!res.ok) throw new ApiError(res.status, 'Failed to update task');
-      return res.json();
-    })).pipe(
+    }).then(res => this.handleResponse(res, 'Failed to update task'))).pipe(
       tap(updatedTask => {
         if (this.taskCache.has(id)) {
           this.taskCache.get(id)!.next(updatedTask);
@@ -79,12 +79,10 @@ class TaskService {
   }
 
   public deleteTask(id: number): Observable<void> {
-    return from(fetch(`${configService.apiUrl}/tasks/${id}`, {
+    return from(apiClient(`${configService.apiUrl}/tasks/${id}`, {
       method: 'DELETE',
       headers: this.getHeaders()
-    }).then(async res => {
-      if (!res.ok) throw new ApiError(res.status, 'Failed to delete task');
-    })).pipe(
+    }).then(res => this.handleResponse(res, 'Failed to delete task'))).pipe(
       tap(() => {
         this.taskCache.delete(id);
         this.fetchTasks().subscribe(); // Refresh list

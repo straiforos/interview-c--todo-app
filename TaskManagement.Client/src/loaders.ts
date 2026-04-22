@@ -20,6 +20,7 @@ export const tasksLoader = async () => {
     return await firstValueFrom(taskService.fetchTasks());
   } catch (error) {
     if (error instanceof ApiError) {
+      if (error.status === 401) return redirect('/login');
       throw new Response(error.message, { status: error.status });
     }
     throw error;
@@ -36,6 +37,7 @@ export const taskDetailLoader = async ({ params }: any) => {
     return await firstValueFrom(taskService.getTask(id));
   } catch (error) {
     if (error instanceof ApiError) {
+      if (error.status === 401) return redirect('/login');
       throw new Response(error.message, { status: error.status });
     }
     throw error;
@@ -58,6 +60,7 @@ export const taskEditLoader = async ({ params }: any) => {
     return await firstValueFrom(taskService.getTask(id));
   } catch (error) {
     if (error instanceof ApiError) {
+      if (error.status === 401) return redirect('/login');
       throw new Response(error.message, { status: error.status });
     }
     throw error;

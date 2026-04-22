@@ -1,6 +1,7 @@
 import { BehaviorSubject, Observable, tap, from, shareReplay } from 'rxjs';
 import { AuthResponse } from '../types';
 import { configService } from './config.service';
+import { apiClient } from './api.client';
 
 /**
  * Service responsible for managing user authentication, roles, and permissions.
@@ -15,7 +16,12 @@ class AuthService {
    */
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor() {}
+  constructor() {
+    window.addEventListener('unauthorized', () => {
+      this.logout();
+      window.location.href = '/login';
+    });
+  }
 
   /**
    * Retrieves the stored user data from local storage.
@@ -66,7 +72,7 @@ class AuthService {
    * @returns An Observable containing the AuthResponse.
    */
   public login(credentials: any): Observable<AuthResponse> {
-    return from(fetch(`${configService.apiUrl}/auth/login`, {
+    return from(apiClient(`${configService.apiUrl}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials)
@@ -92,7 +98,7 @@ class AuthService {
    * @returns An Observable containing the AuthResponse.
    */
   public register(data: any): Observable<AuthResponse> {
-    return from(fetch(`${configService.apiUrl}/auth/register`, {
+    return from(apiClient(`${configService.apiUrl}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -118,7 +124,7 @@ class AuthService {
    * @returns An Observable containing the updated AuthResponse.
    */
   public swapRole(roleName: string): Observable<AuthResponse> {
-    return from(fetch(`${configService.apiUrl}/auth/swap-role`, {
+    return from(apiClient(`${configService.apiUrl}/auth/swap-role`, {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
