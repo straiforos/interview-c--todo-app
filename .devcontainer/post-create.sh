@@ -22,6 +22,9 @@ if [ ! -f TaskManagement.Client/public/config.json ]; then
     cp TaskManagement.Client/public/config.json.example TaskManagement.Client/public/config.json
 fi
 
+# Disable SSH commit signing in the container since the macOS 1Password path won't exist
+git config --local commit.gpgsign false
+
 echo "Environment initialization complete."
 dotnet --version
 node --version
