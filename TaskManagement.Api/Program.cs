@@ -109,6 +109,20 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            // GitHub Codespaces proxy sometimes strips the standard Authorization header.
+            // We check for a custom X-Authorization header as a fallback.
+            var customAuth = context.Request.Headers["X-Authorization"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(customAuth) && customAuth.StartsWith("Bearer "))
+            {
+                context.Token = customAuth.Substring("Bearer ".Length).Trim();
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
 var app = builder.Build();

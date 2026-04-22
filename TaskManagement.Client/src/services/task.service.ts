@@ -13,7 +13,8 @@ class TaskService {
   private getHeaders() {
     return {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${authService.token}`
+      'Authorization': `Bearer ${authService.token}`,
+      'X-Authorization': `Bearer ${authService.token}`
     };
   }
 
