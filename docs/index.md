@@ -25,13 +25,13 @@ features:
 
 ## 📸 Application Preview
 
-### Role-Based Access Control (Admin vs ReadOnly)
+### Role-Based Access Control (Admin; Deleted Permissions)
 ![Admin vs ReadOnly Role](./assets/admin-readonly-role.gif)
 
-### Login & ReadOnly Role
+### Login & ReadOnly Role (View Only Permissions)
 ![Login & ReadOnly Role](./assets/login-readonly-role.gif)
 
-### User Role Update View
+### User Role Update View (Edit Permissions)
 ![User Role Update View](./assets/user-role-update-view.gif)
 
 ### Internationalization (i18n)

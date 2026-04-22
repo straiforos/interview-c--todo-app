@@ -87,13 +87,13 @@ npm run dev
 
 Here are some quick demonstrations of the application's core features:
 
-### Role-Based Access Control (Admin vs ReadOnly)
+### Role-Based Access Control (Admin; Deleted Permissions)
 ![Admin vs ReadOnly Role](docs/assets/admin-readonly-role.gif)
 
-### Login & ReadOnly Role
+### Login & ReadOnly Role (View Only Permissions)
 ![Login & ReadOnly Role](docs/assets/login-readonly-role.gif)
 
-### User Role Update View
+### User Role Update View (Edit Permissions)
 ![User Role Update View](docs/assets/user-role-update-view.gif)
 
 ### Internationalization (i18n)
