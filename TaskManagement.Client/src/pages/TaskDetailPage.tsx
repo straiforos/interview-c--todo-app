@@ -60,8 +60,8 @@ export const TaskDetailPage = React.memo(() => {
             <div>
               <p className="text-sm font-medium text-muted-foreground">Creator</p>
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <p className="font-semibold cursor-help">{task.creatorId}</p>
+                <TooltipTrigger render={<p className="font-semibold cursor-help" />}>
+                  {task.creatorId}
                 </TooltipTrigger>
                 <TooltipContent>
                   Internal User ID: {task.creatorId}
@@ -77,8 +77,8 @@ export const TaskDetailPage = React.memo(() => {
             <div>
               <p className="text-sm font-medium text-muted-foreground">Created At</p>
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <p className="font-semibold cursor-help">{formatDate(task.createdAt)}</p>
+                <TooltipTrigger render={<p className="font-semibold cursor-help" />}>
+                  {formatDate(task.createdAt)}
                 </TooltipTrigger>
                 <TooltipContent>
                   Exact time: {formatFullDate(task.createdAt)}
@@ -95,8 +95,8 @@ export const TaskDetailPage = React.memo(() => {
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Last Updated</p>
                 <Tooltip>
-                  <TooltipTrigger asChild>
-                    <p className="font-semibold cursor-help">{formatDate(task.updatedAt)}</p>
+                  <TooltipTrigger render={<p className="font-semibold cursor-help" />}>
+                    {formatDate(task.updatedAt)}
                   </TooltipTrigger>
                   <TooltipContent>
                     Exact time: {formatFullDate(task.updatedAt)}

@@ -4,6 +4,7 @@ import { formatter } from "@lingui/format-json";
 export default {
   locales: ["en", "es"],
   sourceLocale: "en",
+  compileNamespace: "es",
   catalogs: [
     {
       path: "src/locales/{locale}/messages",

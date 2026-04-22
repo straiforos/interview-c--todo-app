@@ -23,11 +23,9 @@ export function LanguageSelect() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2">
-          <Languages className="h-4 w-4" />
-          <span className="uppercase">{currentLocale}</span>
-        </Button>
+      <DropdownMenuTrigger render={<Button variant="ghost" size="sm" className="gap-2" />}>
+        <Languages className="h-4 w-4" />
+        <span className="uppercase">{currentLocale}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => handleLocaleChange('en')}>

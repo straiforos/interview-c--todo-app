@@ -20,7 +20,7 @@ class I18nService {
    */
   public async activate(locale: string) {
     try {
-      const { messages } = await import(`../locales/${locale}/messages.json`);
+      const { messages } = await import(`../locales/${locale}/messages.mjs`);
       i18n.load(locale, messages);
       i18n.activate(locale);
       this.localeSubject.next(locale);
