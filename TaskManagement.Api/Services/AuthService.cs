@@ -44,6 +44,9 @@ public class AuthService : IAuthService
             throw new BadRequestException($"Registration failed: {errors}");
         }
 
+        // Assign default role
+        await _userManager.AddToRoleAsync(user, "User");
+
         return await LoginAsync(new LoginDto { Email = request.Email, Password = request.Password });
     }
 
