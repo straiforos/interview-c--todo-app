@@ -25,6 +25,19 @@ fi
 # Disable SSH commit signing in the container since the macOS 1Password path won't exist
 git config --local commit.gpgsign false
 
+# Install Entity Framework Core tools globally
+echo "Installing dotnet-ef globally..."
+dotnet tool install --global dotnet-ef
+
+# Ensure global tools are in PATH
+export PATH="$PATH:$HOME/.dotnet/tools"
+
+# Run database migrations
+echo "Running database migrations..."
+if [ -f /workspace/scripts/db/update.sh ]; then
+    /workspace/scripts/db/update.sh || echo "Warning: Database update failed. The DB might not be ready yet."
+fi
+
 echo "Environment initialization complete."
 dotnet --version
 node --version
