@@ -1,11 +1,12 @@
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router';
-import { tasksLoader, taskDetailLoader } from './loaders';
+import { tasksLoader, taskDetailLoader, taskCreateLoader, taskEditLoader } from './loaders';
 import { Layout } from './components/Layout';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { TaskListPage } from './pages/TaskListPage';
 import { TaskDetailPage } from './pages/TaskDetailPage';
 import { TaskFormPage } from './pages/TaskFormPage';
+import { ProfilePage } from './pages/ProfilePage';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 let router: ReturnType<typeof createBrowserRouter>;
@@ -39,6 +40,7 @@ export default function App() {
               },
               {
                 path: 'tasks/new',
+                loader: taskCreateLoader,
                 element: <TaskFormPage />,
               },
               {
@@ -48,8 +50,12 @@ export default function App() {
               },
               {
                 path: 'tasks/:id/edit',
-                loader: taskDetailLoader,
+                loader: taskEditLoader,
                 element: <TaskFormPage />,
+              },
+              {
+                path: 'profile',
+                element: <ProfilePage />,
               },
               {
                 path: '*',

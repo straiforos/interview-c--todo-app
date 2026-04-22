@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { ArrowLeft, Edit2, Calendar, User, Clock, CheckCircle2, Circle } from 'lucide-react';
+import { HasPermission } from '../components/shared/HasPermission';
 
 export const TaskDetailPage = React.memo(() => {
   const task = useLoaderData() as TaskDto;
@@ -37,12 +38,14 @@ export const TaskDetailPage = React.memo(() => {
           </div>
           <p className="text-sm text-muted-foreground">Task ID: #{task.id}</p>
         </div>
-        <Button variant="outline" size="sm" asChild>
-          <Link to={`/tasks/${task.id}/edit`}>
-            <Edit2 className="h-4 w-4 mr-2" />
-            Edit Task
-          </Link>
-        </Button>
+        <HasPermission permission="Tasks.Update">
+          <Button variant="outline" size="sm" asChild>
+            <Link to={`/tasks/${task.id}/edit`}>
+              <Edit2 className="h-4 w-4 mr-2" />
+              Edit Task
+            </Link>
+          </Button>
+        </HasPermission>
       </CardHeader>
       <CardContent className="space-y-6 pt-6">
         <div className="space-y-2">

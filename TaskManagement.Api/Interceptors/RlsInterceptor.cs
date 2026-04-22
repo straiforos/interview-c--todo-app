@@ -24,16 +24,17 @@ public class RlsInterceptor : DbConnectionInterceptor
         {
             using var command = connection.CreateCommand();
             var userId = _currentUserService.UserId;
+            var role = _currentUserService.Role ?? "User"; // Default to User if not found
             
             if (!string.IsNullOrEmpty(userId))
             {
-                command.CommandText = $"SET ROLE app_user; SET SESSION app.current_user_id = '{userId}';";
+                command.CommandText = $"SET ROLE app_user; SET SESSION app.current_user_id = '{userId}'; SET SESSION app.user_role = '{role}';";
             }
             else
             {
                 // Reset role and session for unauthenticated requests (e.g., login/register)
                 // to prevent connection pooling from leaking state.
-                command.CommandText = "RESET ROLE; RESET app.current_user_id;";
+                command.CommandText = "RESET ROLE; RESET app.current_user_id; RESET app.user_role;";
             }
             
             await command.ExecuteNonQueryAsync(cancellationToken);
@@ -46,14 +47,15 @@ public class RlsInterceptor : DbConnectionInterceptor
         {
             using var command = connection.CreateCommand();
             var userId = _currentUserService.UserId;
+            var role = _currentUserService.Role ?? "User";
             
             if (!string.IsNullOrEmpty(userId))
             {
-                command.CommandText = $"SET ROLE app_user; SET SESSION app.current_user_id = '{userId}';";
+                command.CommandText = $"SET ROLE app_user; SET SESSION app.current_user_id = '{userId}'; SET SESSION app.user_role = '{role}';";
             }
             else
             {
-                command.CommandText = "RESET ROLE; RESET app.current_user_id;";
+                command.CommandText = "RESET ROLE; RESET app.current_user_id; RESET app.user_role;";
             }
             
             command.ExecuteNonQuery();

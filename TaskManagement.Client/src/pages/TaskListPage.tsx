@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { taskService } from '../services/task.service';
 import { Plus, Eye, Edit2, Trash2 } from 'lucide-react';
 import { useLingui } from '@lingui/react/macro';
+import { HasPermission } from '../components/shared/HasPermission';
 
 export const TaskListPage = React.memo(() => {
   const { t } = useLingui();
@@ -51,10 +52,12 @@ export const TaskListPage = React.memo(() => {
           <Card key={task.id} className="group hover:shadow-md transition-shadow">
             <CardContent className="p-4 flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <Checkbox
-                  checked={task.isCompleted}
-                  onCheckedChange={() => handleToggle(task.id, task.isCompleted)}
-                />
+                <HasPermission permission="Tasks.Update">
+                  <Checkbox
+                    checked={task.isCompleted}
+                    onCheckedChange={() => handleToggle(task.id, task.isCompleted)}
+                  />
+                </HasPermission>
                 <span className={task.isCompleted ? 'line-through text-muted-foreground' : 'font-medium'}>
                   {task.title}
                 </span>
@@ -65,14 +68,18 @@ export const TaskListPage = React.memo(() => {
                     <Eye className="h-4 w-4" />
                   </Link>
                 </Button>
-                <Button variant="ghost" size="icon" asChild>
-                  <Link to={`/tasks/${task.id}/edit`}>
-                    <Edit2 className="h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button variant="ghost" size="icon" onClick={() => handleDelete(task.id)}>
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
+                <HasPermission permission="Tasks.Update">
+                  <Button variant="ghost" size="icon" asChild>
+                    <Link to={`/tasks/${task.id}/edit`}>
+                      <Edit2 className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </HasPermission>
+                <HasPermission permission="Tasks.Delete">
+                  <Button variant="ghost" size="icon" onClick={() => handleDelete(task.id)}>
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </HasPermission>
               </div>
             </CardContent>
           </Card>
@@ -90,12 +97,14 @@ export const TaskListPage = React.memo(() => {
             {t({ id: 'task.list.subtitle', message: 'Manage your personal tasks and assignments.' })}
           </p>
         </div>
-        <Button asChild>
-          <Link to="/tasks/new">
-            <Plus className="h-4 w-4 mr-2" />
-            {t({ id: 'task.list.new_task', message: 'New Task' })}
-          </Link>
-        </Button>
+        <HasPermission permission="Tasks.Create">
+          <Button asChild>
+            <Link to="/tasks/new">
+              <Plus className="h-4 w-4 mr-2" />
+              {t({ id: 'task.list.new_task', message: 'New Task' })}
+            </Link>
+          </Button>
+        </HasPermission>
       </div>
 
       {taskList}

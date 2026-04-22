@@ -8,6 +8,10 @@ export interface AuthResponse {
   email: string;
   /** Unique identifier for the user */
   userId: string;
+  /** User's role */
+  role: string;
+  /** User's permissions */
+  permissions: string[];
 }
 
 /**

@@ -3,7 +3,7 @@ import { authService } from '../services/auth.service';
 import { Button } from '@/components/ui/button';
 import { LanguageSelect } from './LanguageSelect';
 import { useObservable } from '../hooks/useObservable';
-import { LogOut, CheckSquare, Loader2 } from 'lucide-react';
+import { LogOut, CheckSquare, Loader2, User as UserIcon } from 'lucide-react';
 import { useLingui } from '@lingui/react/macro';
 
 export function Layout() {
@@ -32,9 +32,13 @@ export function Layout() {
           <div className="flex items-center gap-4">
             <LanguageSelect />
 
-            <span className="text-sm text-muted-foreground hidden sm:inline-block">
-              {user.email}
-            </span>
+            <Button variant="ghost" size="sm" asChild className="hidden sm:flex">
+              <Link to="/profile">
+                <UserIcon className="h-4 w-4 mr-2" />
+                {user.email}
+              </Link>
+            </Button>
+            
             <Button variant="ghost" size="sm" onClick={handleLogout}>
               <LogOut className="h-4 w-4 mr-2" />
               {t({ id: 'auth.logout', message: 'Logout' })}

@@ -22,33 +22,44 @@ public static class DbSeeder
         }
         await context.SaveChangesAsync();
 
-        // 2. Seed Default Role
-        var defaultRoleName = "User";
-        if (!await roleManager.RoleExistsAsync(defaultRoleName))
+        // 2. Seed Roles and Permissions
+        var rolesWithPermissions = new Dictionary<string, List<string>>
         {
-            await roleManager.CreateAsync(new IdentityRole(defaultRoleName));
-        }
-
-        // 3. Assign Permissions to Default Role
-        var role = await roleManager.FindByNameAsync(defaultRoleName);
-        var rolePermissions = await context.RolePermissions
-            .Where(rp => rp.RoleId == role!.Id)
-            .Select(rp => rp.PermissionId)
-            .ToListAsync();
+            { "Admin", new List<string> { "Tasks.Read", "Tasks.Create", "Tasks.Update", "Tasks.Delete" } },
+            { "User", new List<string> { "Tasks.Read", "Tasks.Create", "Tasks.Update" } },
+            { "ReadOnly", new List<string> { "Tasks.Read" } }
+        };
 
         var allPermissions = await context.Permissions.ToListAsync();
 
-        foreach (var permission in allPermissions)
+        foreach (var roleConfig in rolesWithPermissions)
         {
-            if (!rolePermissions.Contains(permission.Id))
+            var roleName = roleConfig.Key;
+            if (!await roleManager.RoleExistsAsync(roleName))
             {
-                context.RolePermissions.Add(new RolePermission
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
+
+            var role = await roleManager.FindByNameAsync(roleName);
+            var currentRolePermissions = await context.RolePermissions
+                .Where(rp => rp.RoleId == role!.Id)
+                .Select(rp => rp.Permission.Name)
+                .ToListAsync();
+
+            foreach (var permName in roleConfig.Value)
+            {
+                if (!currentRolePermissions.Contains(permName))
                 {
-                    RoleId = role!.Id,
-                    PermissionId = permission.Id
-                });
+                    var permission = allPermissions.First(p => p.Name == permName);
+                    context.RolePermissions.Add(new RolePermission
+                    {
+                        RoleId = role!.Id,
+                        PermissionId = permission.Id
+                    });
+                }
             }
         }
+        
         await context.SaveChangesAsync();
     }
 }
