@@ -122,8 +122,7 @@ class AuthService {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.token}`,
-        'X-Authorization': `Bearer ${this.token}`
+        'Authorization': `Bearer ${this.token}`
       },
       body: JSON.stringify({ roleName })
     }).then(async res => {
