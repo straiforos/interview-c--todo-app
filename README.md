@@ -2,6 +2,22 @@
 
 A Task Management application built with **.NET 10** and **React 19**. This project was developed as an interview take-home assignment to demonstrate advanced architectural patterns, bulletproof data isolation, and modern full-stack development practices.
 
+## 📸 Application Preview
+
+Here are some quick demonstrations of the application's core features:
+
+### Role-Based Access Control (Admin vs ReadOnly)
+![Admin vs ReadOnly Role](docs/assets/admin-readonly-role.gif)
+
+### Login & ReadOnly Role
+![Login & ReadOnly Role](docs/assets/login-readonly-role.gif)
+
+### User Role Update View
+![User Role Update View](docs/assets/user-role-update-view.gif)
+
+### Internationalization (i18n)
+![Internationalization](docs/assets/internationalization.gif)
+
 ## 🚀 Zero-Setup Development Environment
 
 This project uses **VS Code Dev Containers** to provide a completely automated, zero-setup development environment. **You do not need to install .NET, Node.js, or PostgreSQL on your local machine.**

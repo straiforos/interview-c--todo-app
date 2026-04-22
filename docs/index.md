@@ -22,3 +22,18 @@ features:
   - title: Documented Decisions
     details: Architecture Decision Records (ADRs) explaining the 'why' behind the code.
 ---
+
+## 📸 Application Preview
+
+### Role-Based Access Control (Admin vs ReadOnly)
+![Admin vs ReadOnly Role](./assets/admin-readonly-role.gif)
+
+### Login & ReadOnly Role
+![Login & ReadOnly Role](./assets/login-readonly-role.gif)
+
+### User Role Update View
+![User Role Update View](./assets/user-role-update-view.gif)
+
+### Internationalization (i18n)
+![Internationalization](./assets/internationalization.gif)
+
