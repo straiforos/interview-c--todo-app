@@ -8,7 +8,7 @@ The frontend needs a robust way to manage state, handle asynchronous data fetchi
 
 ## Decision
 We will implement a **Service-Oriented Architecture (SOA)** on the frontend and use **RxJS** for state management. 
-- **Services**: API communication and business logic will be abstracted into singleton service classes (e.g., `TodoService`, `AuthService`).
+- **Services**: API communication and business logic will be abstracted into singleton service classes (e.g., `TaskService`, `AuthService`).
 - **State Management**: Services will expose state via RxJS `BehaviorSubject` and `Observable` streams.
 - **Components**: React components will remain purely presentational, subscribing to the RxJS observables provided by the services to receive data, loading, and error states.
 

@@ -12,7 +12,7 @@ We will implement the following security architecture:
 1. **ASP.NET Core Identity**: Used for underlying user management, database schema generation, and secure password hashing.
 2. **JWT Bearer Authentication**: Used for stateless API security.
 3. **Custom AuthController**: Instead of using the built-in `.MapIdentityApi()`, we will build custom login and registration endpoints. This ensures we have complete control over the input/output DTOs and error responses.
-4. **Data Isolation via `ICurrentUserService`**: We will create an `ICurrentUserService` that wraps `IHttpContextAccessor` to extract the `UserId` claim from the authenticated `ClaimsPrincipal`. The `TodoService` will inject this service to filter all database queries, ensuring strict data ownership without trusting client-provided user IDs.
+4. **Data Isolation via `ICurrentUserService`**: We will create an `ICurrentUserService` that wraps `IHttpContextAccessor` to extract the `UserId` claim from the authenticated `ClaimsPrincipal`. The `TaskService` will inject this service to filter all database queries, ensuring strict data ownership without trusting client-provided user IDs.
 
 ## Consequences
 - **Positive**: Provides enterprise-grade security, strict data isolation, complete control over API contracts, and highly testable business logic (since `ICurrentUserService` can be mocked in unit tests).
