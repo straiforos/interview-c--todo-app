@@ -69,7 +69,6 @@ class AuthService {
     return from(fetch(`${configService.apiUrl}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'omit',
       body: JSON.stringify(credentials)
     }).then(async res => {
       if (!res.ok) {
@@ -96,7 +95,6 @@ class AuthService {
     return from(fetch(`${configService.apiUrl}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'omit',
       body: JSON.stringify(data)
     }).then(async res => {
       if (!res.ok) {
@@ -126,7 +124,6 @@ class AuthService {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${this.token}`
       },
-      credentials: 'omit',
       body: JSON.stringify({ roleName })
     }).then(async res => {
       if (!res.ok) {
