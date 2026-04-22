@@ -9,7 +9,7 @@ public static class ExceptionHandlingExtensions
     {
         app.UseExceptionHandler(appError =>
         {
-            app.Run(async context =>
+            appError.Run(async context =>
             {
                 var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                 if (contextFeature != null)

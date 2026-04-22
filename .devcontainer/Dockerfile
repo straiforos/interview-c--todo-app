@@ -7,6 +7,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
 # Install additional tools
 RUN apt-get update && apt-get install -y \
     postgresql-client \
+    chromium \
     && rm -rf /var/lib/apt/lists/*
+
+ENV CHROME_BIN=/usr/bin/chromium
 
 USER vscode

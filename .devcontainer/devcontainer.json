@@ -16,7 +16,8 @@
         "mhutchie.git-graph",
         "christian-kohler.path-intellisense",
         "visualstudioexptteam.vscodeintellicode",
-        "ric-v.postgres-explorer"
+        "ric-v.postgres-explorer",
+        "ms-edgedevtools.vscode-edge-devtools"
       ]
     }
   },

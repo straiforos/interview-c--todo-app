@@ -25,9 +25,14 @@ class AuthService {
     return from(fetch(`${configService.apiUrl}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'omit',
       body: JSON.stringify(credentials)
-    }).then(res => {
-      if (!res.ok) throw new Error('Login failed');
+    }).then(async res => {
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Login failed:', res.status, errorText);
+        throw new Error('Login failed');
+      }
       return res.json();
     })).pipe(
       tap((user: AuthResponse) => {
@@ -42,9 +47,14 @@ class AuthService {
     return from(fetch(`${configService.apiUrl}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'omit',
       body: JSON.stringify(data)
-    }).then(res => {
-      if (!res.ok) throw new Error('Registration failed');
+    }).then(async res => {
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Registration failed:', res.status, errorText);
+        throw new Error('Registration failed');
+      }
       return res.json();
     })).pipe(
       tap((user: AuthResponse) => {

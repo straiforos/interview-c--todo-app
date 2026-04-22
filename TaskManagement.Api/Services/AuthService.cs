@@ -32,7 +32,7 @@ public class AuthService : IAuthService
     {
         var user = new User
         {
-            UserName = request.UserName,
+            UserName = string.IsNullOrWhiteSpace(request.UserName) ? request.Email : request.UserName,
             Email = request.Email
         };
 

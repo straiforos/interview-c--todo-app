@@ -14,6 +14,7 @@ services:
       - Jwt__Key=DevelopmentSecretKey_ChangeThisInProduction_MustBeLongEnough
       - Jwt__Issuer=TaskFlowApp
       - Jwt__Audience=TaskFlowApp
+      - Jwt__ExpiryInMinutes=60
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5000
 
