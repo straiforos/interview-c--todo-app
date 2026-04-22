@@ -70,7 +70,3 @@ This project is driven by a series of **Architecture Decision Records (ADRs)** l
 - **Local Storage for JWT**: For this MVP demonstration, the JWT is stored in `localStorage`. In a strict production environment, `HttpOnly` cookies would be implemented to mitigate XSS risks.
 - **Auto-Migrations**: The API auto-migrates the database on startup to ensure a seamless reviewer experience. In a real-world scenario, migrations would be applied via a CI/CD pipeline.
 
-## 📈 Scalability & Future Work
-- **Rich Text & Media**: The architecture is ready to support rich text content and blob storage (e.g., AWS S3) for media attachments.
-- **Caching**: Implement Redis for distributed caching of frequent queries.
-- **Testing**: Expand integration test coverage to include RLS policy edge cases.
