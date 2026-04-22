@@ -25,8 +25,7 @@ export const TaskListPage = React.memo(() => {
       taskService.updateTask(id, {
         title: fullTask.title,
         description: fullTask.description,
-        isCompleted: !currentStatus,
-        assigneeId: fullTask.assigneeId
+        isCompleted: !currentStatus
       }).subscribe();
     });
   };

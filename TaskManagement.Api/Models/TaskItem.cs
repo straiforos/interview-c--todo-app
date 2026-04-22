@@ -16,7 +16,4 @@ public class TaskItem : IBaseEntity, ISoftDeletable
 
     public string CreatorId { get; set; } = string.Empty;
     public virtual User Creator { get; set; } = null!;
-
-    public string? AssigneeId { get; set; }
-    public virtual User? Assignee { get; set; }
 }

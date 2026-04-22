@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TaskManagement.Api.Data;
@@ -11,9 +12,11 @@ using TaskManagement.Api.Data;
 namespace TaskManagement.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260422042317_AddRowLevelSecurity")]
+    partial class AddRowLevelSecurity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,6 +157,40 @@ namespace TaskManagement.Api.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("TaskManagement.Api.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("TaskId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("TaskManagement.Api.Models.Permission", b =>
                 {
                     b.Property<int>("Id")
@@ -198,6 +235,9 @@ namespace TaskManagement.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AssigneeId")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -225,6 +265,8 @@ namespace TaskManagement.Api.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssigneeId");
 
                     b.HasIndex("CreatorId");
 
@@ -346,6 +388,23 @@ namespace TaskManagement.Api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TaskManagement.Api.Models.Notification", b =>
+                {
+                    b.HasOne("TaskManagement.Api.Models.TaskItem", "Task")
+                        .WithMany()
+                        .HasForeignKey("TaskId");
+
+                    b.HasOne("TaskManagement.Api.Models.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Task");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TaskManagement.Api.Models.RolePermission", b =>
                 {
                     b.HasOne("TaskManagement.Api.Models.Permission", "Permission")
@@ -367,11 +426,18 @@ namespace TaskManagement.Api.Migrations
 
             modelBuilder.Entity("TaskManagement.Api.Models.TaskItem", b =>
                 {
+                    b.HasOne("TaskManagement.Api.Models.User", "Assignee")
+                        .WithMany("AssignedTasks")
+                        .HasForeignKey("AssigneeId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("TaskManagement.Api.Models.User", "Creator")
                         .WithMany("CreatedTasks")
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Assignee");
 
                     b.Navigation("Creator");
                 });
@@ -383,7 +449,11 @@ namespace TaskManagement.Api.Migrations
 
             modelBuilder.Entity("TaskManagement.Api.Models.User", b =>
                 {
+                    b.Navigation("AssignedTasks");
+
                     b.Navigation("CreatedTasks");
+
+                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }

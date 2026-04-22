@@ -23,8 +23,7 @@ public class TaskDto
     public bool IsCompleted { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
-    public string CreatorId { get; set; } = string.Empty;
-    public string? AssigneeId { get; set; }
+    public string CreatorUsername { get; set; } = string.Empty;
 }
 
 public class CreateTaskDto
@@ -35,8 +34,6 @@ public class CreateTaskDto
 
     [StringLength(500)]
     public string? Description { get; set; }
-
-    public string? AssigneeId { get; set; }
 }
 
 public class UpdateTaskDto
@@ -49,6 +46,4 @@ public class UpdateTaskDto
     public string? Description { get; set; }
 
     public bool IsCompleted { get; set; }
-
-    public string? AssigneeId { get; set; }
 }

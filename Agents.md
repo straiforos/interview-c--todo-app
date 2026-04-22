@@ -16,7 +16,7 @@ This document outlines the architectural standards, code quality requirements, a
 │   ├── DTOs/                  # Request/Response contracts (Separate for Create/Update)
 │   ├── Models/                # EF Core Entities (Internal only, implement IBaseEntity)
 │   ├── Services/              # Business logic, SOA, Data Isolation (RLS)
-│   ├── Interceptors/          # AOP: RLS, Notifications, Exception Filters
+│   ├── Interceptors/          # AOP: RLS, Exception Filters
 │   └── wwwroot/               # Local blob storage for MVP media
 ├── TaskManagement.Client/     # React 19 + Vite 8 (Frontend)
 │   ├── src/
@@ -39,7 +39,7 @@ This document outlines the architectural standards, code quality requirements, a
 - **Service-Oriented Architecture (SOA)**: Controllers must **NEVER** access repositories directly. All logic and data access must flow through a dedicated Service layer.
 - **Generic CRUD**: Leverage the `ICrudRepository` and `ICrudService` patterns to minimize boilerplate while maintaining consistency.
 - **Aspect-Oriented Programming (AOP)**: 
-    - Use **EF Core Interceptors** for side-effects (e.g., `NotificationInterceptor` for SignalR).
+    - Use **EF Core Interceptors** for side-effects.
     - Use **Action Filters** for cross-cutting concerns (e.g., `ApiExceptionFilter` for declarative error handling).
 - **Validation**: Use built-in **Data Annotations** directly on DTOs.
 - **Frontend State**: Use **RxJS** in services. Components should subscribe to Observables, not manage complex state or API calls directly.
@@ -58,6 +58,5 @@ This document outlines the architectural standards, code quality requirements, a
     - Use the `t` macro from `useLingui()` for plain text.
     - Use the `<Trans>` component from `@lingui/react` for complex JSX translations.
     - Always run `npm run lingui:extract` after adding new strings and `npm run lingui:compile` before deployment.
-- **Real-time**: Use **SignalR** for all real-time notifications.
 - **Secret Management**: Follow **Environment-Driven Secret Management**. No secrets in `appsettings.json`. Use the **Options Pattern** (`IOptions<T>`).
 - **Documentation**: All major decisions must be recorded in the `docs/architecture/adrs` directory.

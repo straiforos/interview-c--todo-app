@@ -11,7 +11,6 @@ public class AppDbContext : IdentityDbContext<User>
     }
 
     public DbSet<TaskItem> Tasks => Set<TaskItem>();
-    public DbSet<Notification> Notifications => Set<Notification>();
     public DbSet<Permission> Permissions => Set<Permission>();
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
 
@@ -48,19 +47,6 @@ public class AppDbContext : IdentityDbContext<User>
                 .WithMany(u => u.CreatedTasks)
                 .HasForeignKey(t => t.CreatorId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            entity.HasOne(t => t.Assignee)
-                .WithMany(u => u.AssignedTasks)
-                .HasForeignKey(t => t.AssigneeId)
-                .OnDelete(DeleteBehavior.SetNull);
-        });
-
-        builder.Entity<Notification>(entity =>
-        {
-            entity.HasOne(n => n.User)
-                .WithMany(u => u.Notifications)
-                .HasForeignKey(n => n.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
         });
 
         // Global Soft Delete Filter

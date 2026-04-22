@@ -59,14 +59,9 @@ export const TaskDetailPage = React.memo(() => {
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Creator</p>
-              <Tooltip>
-                <TooltipTrigger render={<p className="font-semibold cursor-help" />}>
-                  {task.creatorId}
-                </TooltipTrigger>
-                <TooltipContent>
-                  Internal User ID: {task.creatorId}
-                </TooltipContent>
-              </Tooltip>
+              <p className="font-semibold">
+                {task.creatorUsername}
+              </p>
             </div>
           </div>
 

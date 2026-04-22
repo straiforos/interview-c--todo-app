@@ -26,10 +26,8 @@ export interface TaskDto {
   createdAt: string;
   /** Optional ISO timestamp of the last update */
   updatedAt?: string;
-  /** Unique identifier of the user who created the task */
-  creatorId: string;
-  /** Optional unique identifier of the assigned user */
-  assigneeId?: string;
+  /** Username of the user who created the task */
+  creatorUsername: string;
 }
 
 /**
@@ -40,8 +38,6 @@ export interface CreateTaskDto {
   title: string;
   /** Optional detailed description */
   description?: string;
-  /** Optional unique identifier of the assigned user */
-  assigneeId?: string;
 }
 
 /**
@@ -54,6 +50,4 @@ export interface UpdateTaskDto {
   description?: string;
   /** Completion status */
   isCompleted: boolean;
-  /** Optional unique identifier of the assigned user */
-  assigneeId?: string;
 }

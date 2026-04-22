@@ -16,6 +16,10 @@ public static class ExceptionHandlingExtensions
                 {
                     context.Response.ContentType = "application/problem+json";
                     
+                    // Ensure CORS headers are present even for 500 errors
+                    context.Response.Headers.Append("Access-Control-Allow-Origin", "http://localhost:5173");
+                    context.Response.Headers.Append("Access-Control-Allow-Credentials", "true");
+                    
                     var problemDetails = new ProblemDetails
                     {
                         Status = context.Response.StatusCode,

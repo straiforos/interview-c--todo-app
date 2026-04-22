@@ -30,27 +30,23 @@ public class TaskService : CrudService<TaskItem, TaskDto, CreateTaskDto, UpdateT
 
     public async Task<IEnumerable<TaskSummaryDto>> GetAllSummariesAsync()
     {
-        var userId = _currentUserService.UserId;
-        var tasks = await _context.Tasks
-            .Where(t => t.CreatorId == userId || t.AssigneeId == userId)
-            .ToListAsync();
+        var tasks = await _context.Tasks.ToListAsync();
         return _mapper.Map<IEnumerable<TaskSummaryDto>>(tasks);
     }
 
     public override async Task<IEnumerable<TaskDto>> GetAllAsync()
     {
-        var userId = _currentUserService.UserId;
         var tasks = await _context.Tasks
-            .Where(t => t.CreatorId == userId || t.AssigneeId == userId)
+            .Include(t => t.Creator)
             .ToListAsync();
         return _mapper.Map<IEnumerable<TaskDto>>(tasks);
     }
 
     public override async Task<TaskDto?> GetByIdAsync(int id)
     {
-        var userId = _currentUserService.UserId;
         var task = await _context.Tasks
-            .FirstOrDefaultAsync(t => t.Id == id && (t.CreatorId == userId || t.AssigneeId == userId));
+            .Include(t => t.Creator)
+            .FirstOrDefaultAsync(t => t.Id == id);
         
         if (task == null) throw new NotFoundException($"Task with ID {id} not found or access denied.");
         
@@ -63,14 +59,17 @@ public class TaskService : CrudService<TaskItem, TaskDto, CreateTaskDto, UpdateT
         task.CreatorId = _currentUserService.UserId!;
 
         await _repository.AddAsync(task);
+        
+        task = await _context.Tasks.Include(t => t.Creator).FirstAsync(t => t.Id == task.Id);
+        
         return _mapper.Map<TaskDto>(task);
     }
 
     public override async Task<TaskDto?> UpdateAsync(int id, UpdateTaskDto dto)
     {
-        var userId = _currentUserService.UserId;
         var task = await _context.Tasks
-            .FirstOrDefaultAsync(t => t.Id == id && (t.CreatorId == userId || t.AssigneeId == userId));
+            .Include(t => t.Creator)
+            .FirstOrDefaultAsync(t => t.Id == id);
 
         if (task == null) throw new NotFoundException($"Task with ID {id} not found or access denied.");
 
@@ -84,9 +83,8 @@ public class TaskService : CrudService<TaskItem, TaskDto, CreateTaskDto, UpdateT
 
     public override async Task<bool> DeleteAsync(int id)
     {
-        var userId = _currentUserService.UserId;
         var task = await _context.Tasks
-            .FirstOrDefaultAsync(t => t.Id == id && (t.CreatorId == userId || t.AssigneeId == userId));
+            .FirstOrDefaultAsync(t => t.Id == id);
 
         if (task == null) throw new NotFoundException($"Task with ID {id} not found or access denied.");
 

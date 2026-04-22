@@ -8,7 +8,7 @@ Data isolation is a critical requirement. While application-level filtering (e.g
 
 ## Decision
 We will implement **True PostgreSQL Row Level Security (RLS)**.
-1. **Database Policies**: We will define RLS policies in PostgreSQL (via raw SQL in EF Core migrations) on the `Tasks` and `Notifications` tables. For example, a user can only `SELECT`, `UPDATE`, or `DELETE` a `Task` if their ID matches the `CreatorId` or `AssigneeId`.
+1. **Database Policies**: We will define RLS policies in PostgreSQL (via raw SQL in EF Core migrations) on the `Tasks` and `Notifications` tables. For example, a user can only `SELECT`, `UPDATE`, or `DELETE` a `Task` if their ID matches the `CreatorId`.
 2. **Session Context**: We will use an EF Core `DbConnectionInterceptor`. Whenever EF Core opens a database connection, the interceptor will read the current user's ID from the `ICurrentUserService` and execute `SET LOCAL app.current_user_id = '...';`. The PostgreSQL RLS policies will read this session variable to enforce access.
 
 ## Consequences

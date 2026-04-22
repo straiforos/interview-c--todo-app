@@ -9,7 +9,6 @@ using TaskManagement.Api.Services;
 using TaskManagement.Api.Interceptors;
 using Scalar.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,15 +58,13 @@ builder.Services.AddScoped(typeof(ICrudRepository<>), typeof(EfRepository<>));
 
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddSignalR();
 
 // Database
 builder.Services.AddDbContext<AppDbContext>((sp, options) =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.AddInterceptors(
-        new RlsInterceptor(sp.GetRequiredService<ICurrentUserService>()),
-        new NotificationInterceptor(sp.GetRequiredService<IHubContext<NotificationHub>>())
+        new RlsInterceptor(sp.GetRequiredService<ICurrentUserService>())
     );
 });
 
@@ -138,7 +135,6 @@ app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapHub<NotificationHub>("/hubs/notifications");
 app.UseStaticFiles();
 
 app.Run();

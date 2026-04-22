@@ -70,9 +70,8 @@ The goal is to build a "small, production-quality project" that demonstrates str
 - **Database**: PostgreSQL 18 with Entity Framework Core.
 - **Migrations Strategy**: EF Core Migrations will be used to manage the database schema. To ensure a seamless developer experience, migrations will be automatically applied on application startup in the `Program.cs` development environment block.
 - **Authentication & Data Ownership (RLS)**: Implement JWT-based authentication. Data isolation will be enforced at the database level using **PostgreSQL Row Level Security (RLS)**. An EF Core Interceptor will inject the current user's ID into the database session (`SET LOCAL app.current_user_id`), making accidental data leaks impossible.
-- **Real-time Notifications**: Integrate **SignalR** to push real-time WebSocket notifications when a user is assigned a task.
 - **Architecture**:
-  - **Models**: `User`, `TaskItem` (with `CreatorId`, `AssigneeId`, and audit fields), and `Notification`.
+  - **Models**: `User` and `TaskItem` (with `CreatorId` and audit fields).
   - **DTOs**: Use separate DTOs for different operations (`TaskSummaryDto` for lists, `TaskDto` for details, `CreateTaskDto`, `UpdateTaskDto`) to demonstrate the DTO pattern for performance and data encapsulation. EF entities are never returned.
   - **AutoMapper**: For clean mapping between Entities and DTOs.
   - **Services**: Business logic will live in `TaskService` to keep controllers thin.
@@ -86,8 +85,7 @@ The goal is to build a "small, production-quality project" that demonstrates str
 - **Architecture & State**: Service-Oriented Architecture (SOA) using **RxJS**. Business logic and API calls are abstracted into singleton services. React components subscribe to RxJS Observables for state updates (loading, error, data).
 - **Features**:
   - **Auth**: Login and Registration flows.
-  - **Tasks**: List (using `TaskSummaryDto`), Detail/Edit view (fetching full `TaskDto`), Create, Delete, Toggle status, and assign to Users.
-  - **Notifications**: Real-time toast notifications and an inbox for task assignments, powered by SignalR and RxJS.
+  - **Tasks**: List (using `TaskSummaryDto`), Detail/Edit view (fetching full `TaskDto`), Create, Delete, Toggle status.
   - **UX**: Clear loading skeletons/spinners, error toasts, and empty states. Edge cases handled (e.g., keeping form data on submission failure).
 - **Modularity**: Build a robust `shared` components library using Radix UI primitives styled with Tailwind CSS, ensuring accessibility and reusability across the app.
 

@@ -17,34 +17,46 @@ public class RlsInterceptor : DbConnectionInterceptor
         _currentUserService = currentUserService;
     }
 
-    public override async Task ConnectionOpenedAsync(
-        DbConnection connection,
-        ConnectionEndEventData eventData,
-        CancellationToken cancellationToken = default)
-    {
-        var userId = _currentUserService.UserId;
-        if (!string.IsNullOrEmpty(userId))
+        public override async Task ConnectionOpenedAsync(
+            DbConnection connection,
+            ConnectionEndEventData eventData,
+            CancellationToken cancellationToken = default)
         {
             using var command = connection.CreateCommand();
-            command.CommandText = $"SET LOCAL app.current_user_id = '{userId}';";
+            var userId = _currentUserService.UserId;
+            
+            if (!string.IsNullOrEmpty(userId))
+            {
+                command.CommandText = $"SET ROLE app_user; SET SESSION app.current_user_id = '{userId}';";
+            }
+            else
+            {
+                // Reset role and session for unauthenticated requests (e.g., login/register)
+                // to prevent connection pooling from leaking state.
+                command.CommandText = "RESET ROLE; RESET app.current_user_id;";
+            }
+            
             await command.ExecuteNonQueryAsync(cancellationToken);
+            await base.ConnectionOpenedAsync(connection, eventData, cancellationToken);
         }
 
-        await base.ConnectionOpenedAsync(connection, eventData, cancellationToken);
-    }
-
-    public override void ConnectionOpened(
-        DbConnection connection,
-        ConnectionEndEventData eventData)
-    {
-        var userId = _currentUserService.UserId;
-        if (!string.IsNullOrEmpty(userId))
+        public override void ConnectionOpened(
+            DbConnection connection,
+            ConnectionEndEventData eventData)
         {
             using var command = connection.CreateCommand();
-            command.CommandText = $"SET LOCAL app.current_user_id = '{userId}';";
+            var userId = _currentUserService.UserId;
+            
+            if (!string.IsNullOrEmpty(userId))
+            {
+                command.CommandText = $"SET ROLE app_user; SET SESSION app.current_user_id = '{userId}';";
+            }
+            else
+            {
+                command.CommandText = "RESET ROLE; RESET app.current_user_id;";
+            }
+            
             command.ExecuteNonQuery();
+            base.ConnectionOpened(connection, eventData);
         }
-
-        base.ConnectionOpened(connection, eventData);
-    }
 }
