@@ -15,7 +15,8 @@
         "eamodio.gitlens",
         "mhutchie.git-graph",
         "christian-kohler.path-intellisense",
-        "visualstudioexptteam.vscodeintellicode"
+        "visualstudioexptteam.vscodeintellicode",
+        "ric-v.postgres-explorer"
       ]
     }
   },
