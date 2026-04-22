@@ -20,30 +20,41 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
-    errorElement: <ErrorBoundary />,
     children: [
       {
-        index: true,
-        element: <Navigate to="/tasks" replace />,
-      },
-      {
-        path: 'tasks',
-        loader: tasksLoader,
-        element: <TaskListPage />,
-      },
-      {
-        path: 'tasks/new',
-        element: <TaskFormPage />,
-      },
-      {
-        path: 'tasks/:id',
-        loader: taskDetailLoader,
-        element: <TaskDetailPage />,
-      },
-      {
-        path: 'tasks/:id/edit',
-        loader: taskDetailLoader,
-        element: <TaskFormPage />,
+        errorElement: <ErrorBoundary />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="/tasks" replace />,
+          },
+          {
+            path: 'tasks',
+            loader: tasksLoader,
+            element: <TaskListPage />,
+          },
+          {
+            path: 'tasks/new',
+            element: <TaskFormPage />,
+          },
+          {
+            path: 'tasks/:id',
+            loader: taskDetailLoader,
+            element: <TaskDetailPage />,
+          },
+          {
+            path: 'tasks/:id/edit',
+            loader: taskDetailLoader,
+            element: <TaskFormPage />,
+          },
+          {
+            path: '*',
+            element: <ErrorBoundary />,
+            loader: () => {
+              throw new Response('Not Found', { status: 404 });
+            }
+          },
+        ],
       },
     ],
   },

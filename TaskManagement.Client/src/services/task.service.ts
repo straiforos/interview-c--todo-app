@@ -2,6 +2,7 @@ import { BehaviorSubject, Observable, from, shareReplay, tap } from 'rxjs';
 import { TaskSummaryDto, TaskDto, CreateTaskDto, UpdateTaskDto } from '../types';
 import { authService } from './auth.service';
 import { configService } from './config.service';
+import { ApiError } from './api.error';
 
 class TaskService {
   private tasksSubject = new BehaviorSubject<TaskSummaryDto[]>([]);
@@ -19,8 +20,8 @@ class TaskService {
   public fetchTasks(): Observable<TaskSummaryDto[]> {
     return from(fetch(`${configService.apiUrl}/tasks`, {
       headers: this.getHeaders()
-    }).then(res => {
-      if (!res.ok) throw new Error('Failed to fetch tasks');
+    }).then(async res => {
+      if (!res.ok) throw new ApiError(res.status, 'Failed to fetch tasks');
       return res.json();
     })).pipe(
       tap(tasks => this.tasksSubject.next(tasks)),
@@ -35,8 +36,8 @@ class TaskService {
 
     return from(fetch(`${configService.apiUrl}/tasks/${id}`, {
       headers: this.getHeaders()
-    }).then(res => {
-      if (!res.ok) throw new Error('Failed to fetch task');
+    }).then(async res => {
+      if (!res.ok) throw new ApiError(res.status, 'Failed to fetch task');
       return res.json();
     })).pipe(
       tap(task => this.taskCache.get(id)!.next(task)),
@@ -49,8 +50,8 @@ class TaskService {
       method: 'POST',
       headers: this.getHeaders(),
       body: JSON.stringify(dto)
-    }).then(res => {
-      if (!res.ok) throw new Error('Failed to create task');
+    }).then(async res => {
+      if (!res.ok) throw new ApiError(res.status, 'Failed to create task');
       return res.json();
     })).pipe(
       tap(() => this.fetchTasks().subscribe()), // Refresh list
@@ -63,8 +64,8 @@ class TaskService {
       method: 'PUT',
       headers: this.getHeaders(),
       body: JSON.stringify(dto)
-    }).then(res => {
-      if (!res.ok) throw new Error('Failed to update task');
+    }).then(async res => {
+      if (!res.ok) throw new ApiError(res.status, 'Failed to update task');
       return res.json();
     })).pipe(
       tap(updatedTask => {
@@ -81,8 +82,8 @@ class TaskService {
     return from(fetch(`${configService.apiUrl}/tasks/${id}`, {
       method: 'DELETE',
       headers: this.getHeaders()
-    }).then(res => {
-      if (!res.ok) throw new Error('Failed to delete task');
+    }).then(async res => {
+      if (!res.ok) throw new ApiError(res.status, 'Failed to delete task');
     })).pipe(
       tap(() => {
         this.taskCache.delete(id);
