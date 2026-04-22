@@ -43,12 +43,15 @@ public static class DbSeeder
             var role = await roleManager.FindByNameAsync(roleName);
             var currentRolePermissions = await context.RolePermissions
                 .Where(rp => rp.RoleId == role!.Id)
-                .Select(rp => rp.Permission.Name)
+                .Include(rp => rp.Permission)
                 .ToListAsync();
 
+            var currentPermNames = currentRolePermissions.Select(rp => rp.Permission.Name).ToList();
+
+            // Add missing permissions
             foreach (var permName in roleConfig.Value)
             {
-                if (!currentRolePermissions.Contains(permName))
+                if (!currentPermNames.Contains(permName))
                 {
                     var permission = allPermissions.First(p => p.Name == permName);
                     context.RolePermissions.Add(new RolePermission
@@ -58,6 +61,17 @@ public static class DbSeeder
                     });
                 }
             }
+
+            // Remove extra permissions
+            foreach (var rp in currentRolePermissions)
+            {
+                if (!roleConfig.Value.Contains(rp.Permission.Name))
+                {
+                    context.RolePermissions.Remove(rp);
+                }
+            }
+            
+            await context.SaveChangesAsync();
         }
         
         await context.SaveChangesAsync();
