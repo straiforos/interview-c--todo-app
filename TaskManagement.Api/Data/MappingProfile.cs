@@ -12,7 +12,5 @@ public class MappingProfile : Profile
         CreateMap<TaskItem, TaskDto>();
         CreateMap<CreateTaskDto, TaskItem>();
         CreateMap<UpdateTaskDto, TaskItem>();
-
-        CreateMap<MediaItem, MediaDto>();
     }
 }

@@ -8,12 +8,13 @@ namespace TaskManagement.Api.Controllers;
 /// <summary>
 /// Base class for controllers that provide CRUD operations.
 /// </summary>
-public abstract class BaseCrudController<TEntity, TDto, TCreateDto, TUpdateDto> : ControllerBase
+public abstract class BaseCrudController<TEntity, TDto, TCreateDto, TUpdateDto, TService> : ControllerBase
     where TEntity : class, IBaseEntity
+    where TService : ICrudService<TEntity, TDto, TCreateDto, TUpdateDto>
 {
-    protected readonly ICrudService<TEntity, TDto, TCreateDto, TUpdateDto> _service;
+    protected readonly TService _service;
 
-    protected BaseCrudController(ICrudService<TEntity, TDto, TCreateDto, TUpdateDto> service)
+    protected BaseCrudController(TService service)
     {
         _service = service;
     }

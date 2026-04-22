@@ -9,11 +9,13 @@ using TaskManagement.Api.Services;
 using TaskManagement.Api.Interceptors;
 using Scalar.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson();
 builder.Services.AddMemoryCache();
 
 // Authorization
@@ -39,18 +41,6 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Services
 builder.Services.AddScoped(typeof(ICrudRepository<>), typeof(EfRepository<>));
-builder.Services.AddScoped(typeof(ICrudService<,,,>), typeof(CrudService<,,,>));
-
-// Register granular interfaces by delegating to the main implementation
-builder.Services.AddScoped(typeof(ICreateRepository<>), sp => sp.GetRequiredService(typeof(ICrudRepository<>)));
-builder.Services.AddScoped(typeof(IReadRepository<>), sp => sp.GetRequiredService(typeof(ICrudRepository<>)));
-builder.Services.AddScoped(typeof(IUpdateRepository<>), sp => sp.GetRequiredService(typeof(ICrudRepository<>)));
-builder.Services.AddScoped(typeof(IDeleteRepository<>), sp => sp.GetRequiredService(typeof(ICrudRepository<>)));
-
-builder.Services.AddScoped(typeof(ICreateService<,,>), sp => sp.GetRequiredService(typeof(ICrudService<,,,>)));
-builder.Services.AddScoped(typeof(IReadService<,>), sp => sp.GetRequiredService(typeof(ICrudService<,,,>)));
-builder.Services.AddScoped(typeof(IUpdateService<,,>), sp => sp.GetRequiredService(typeof(ICrudService<,,,>)));
-builder.Services.AddScoped(typeof(IDeleteService<>), sp => sp.GetRequiredService(typeof(ICrudService<,,,>)));
 
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -129,7 +119,5 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHub<NotificationHub>("/hubs/notifications");
 app.UseStaticFiles();
-
-app.Urls.Add("http://0.0.0.0:5000");
 
 app.Run();

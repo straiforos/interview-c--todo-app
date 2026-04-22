@@ -13,7 +13,7 @@ namespace TaskManagement.Api.Controllers;
 /// </summary>
 [Authorize]
 [ApiExceptionFilter]
-public class TasksController : BaseCrudController<TaskItem, TaskDto, CreateTaskDto, UpdateTaskDto>
+public class TasksController : BaseCrudController<TaskItem, TaskDto, CreateTaskDto, UpdateTaskDto, ITaskService>
 {
     public TasksController(ITaskService service) : base(service)
     {
