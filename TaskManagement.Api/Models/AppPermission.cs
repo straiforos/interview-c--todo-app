@@ -17,9 +17,6 @@ public enum AppPermission
     
     [PermissionName("Tasks.Delete")]
     TasksDelete = 4,
-
-    // Media Permissions
-    // Removed Media permissions for simplified scope
 }
 
 /// <summary>

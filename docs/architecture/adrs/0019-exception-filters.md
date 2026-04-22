@@ -14,7 +14,7 @@ We will implement an **Exception Handling Action Filter** to provide granular, d
 
 1. `**ApiExceptionFilterAttribute`**: We will create a custom `ExceptionFilterAttribute`.
 2. **Exception Mapping**: The filter will contain a dictionary or switch statement that maps specific exception types to `IActionResult` results (e.g., `NotFoundException` -> `NotFoundResult`).
-3. **Application**: We will apply this attribute to our `BaseCrudController`. This ensures that all inheriting controllers (Tasks, Media) automatically benefit from this "aspect" without needing `try-catch` blocks in their actions.
+3. **Application**: We will apply this attribute to our `BaseCrudController`. This ensures that all inheriting controllers (Tasks) automatically benefit from this "aspect" without needing `try-catch` blocks in their actions.
 
 ## Consequences
 
