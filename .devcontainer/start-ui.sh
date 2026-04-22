@@ -10,4 +10,7 @@ npm install
 
 # Start the dev server
 echo "Starting Vite dev server..."
-npm run dev -- --host --port 5173
+npm run dev -- --host --port 5173 || echo "Vite exited with error."
+
+# Keep the container alive
+sleep infinity

@@ -1,5 +1,5 @@
 {
-  "name": "TODO Interview Take Home App",
+  "name": "TaskFlow App Final v9",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",

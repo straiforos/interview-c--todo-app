@@ -4,7 +4,9 @@ services:
       context: .
       dockerfile: Dockerfile
     init: true
-    command: sleep infinity
+    command: bash /workspace/.devcontainer/start-api.sh
+    depends_on:
+      - db
     volumes:
       - ..:/workspace:cached
     environment:
@@ -12,11 +14,15 @@ services:
       - Jwt__Key=DevelopmentSecretKey_ChangeThisInProduction_MustBeLongEnough
       - Jwt__Issuer=TaskFlowApp
       - Jwt__Audience=TaskFlowApp
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
 
   ui:
     image: node:24-slim
     command: bash /workspace/.devcontainer/start-ui.sh
     network_mode: service:app
+    depends_on:
+      - app
     volumes:
       - ..:/workspace:cached
     working_dir: /workspace/TaskManagement.Client
