@@ -1,69 +1,76 @@
-# Task Management App
+# Task Management App - Interview Take-Home
 
-A production-ready Task Management application built with **.NET 10** and **React 19**, demonstrating advanced architectural patterns, bulletproof data isolation, and real-time features.
+A Task Management application built with **.NET 10** and **React 19**. This project was developed as an interview take-home assignment to demonstrate advanced architectural patterns, bulletproof data isolation, and modern full-stack development practices.
 
-## 🚀 Quick Start
+## 🚀 Zero-Setup Development Environment
 
-### Prerequisites
-- Docker
-- VS Code with "Dev Containers" extension
+This project uses **VS Code Dev Containers** to provide a completely automated, zero-setup development environment. **You do not need to install .NET, Node.js, or PostgreSQL on your local machine.**
 
-### Setup
-1. Clone the repository.
-2. **Environment Setup**:
-   - Copy the environment templates to create your local development configuration:
-     ```bash
-     cp TaskManagement.Api/.env.example TaskManagement.Api/.env.development
-     cp TaskManagement.Client/.env.example TaskManagement.Client/.env.development
-     ```
-3. Open in VS Code.
-3. Click **"Reopen in Container"** when prompted.
-4. The DevContainer will automatically:
+### How to run:
+1. Clone the repository and open the folder in **VS Code**.
+2. When prompted, click **"Reopen in Container"** (requires the Dev Containers extension and Docker).
+3. The container will automatically:
    - Spin up a **PostgreSQL 18** database.
-   - Install .NET 10 SDK and Node.js 24.
-   - Configure all necessary tools.
+   - Install the **.NET 10 SDK** and **Node.js 24**.
+   - Restore all backend and frontend dependencies.
+   - Apply database migrations automatically on startup.
 
-### Running the App
-1. **Backend**:
-   ```bash
-   cd TaskManagement.Api
-   dotnet run
-   ```
-   *The database will auto-migrate on startup.*
-   *API available at: `http://localhost:5000`*
-   *Interactive Docs (Scalar): `http://localhost:5000/scalar/v1`*
+### Running the App (Inside the Dev Container)
 
-2. **Frontend**:
-   ```bash
-   cd TaskManagement.Client
-   npm install
-   npm run dev
-   ```
-   *App available at: `http://localhost:5173`*
+**Backend (API):**
+```bash
+cd TaskManagement.Api
+dotnet run
+```
+* API available at: `http://localhost:5000`
+* Interactive API Docs (Scalar): `http://localhost:5000/scalar/v1`
 
-## 🏗️ Architecture Highlights
+**Frontend (Client):**
+```bash
+cd TaskManagement.Client
+npm run dev
+```
+* App available at: `http://localhost:5173`
 
-### Backend
-- **PostgreSQL Row Level Security (RLS)**: Data isolation is enforced at the database engine level. Accidental data leaks are impossible as the DB rejects queries not matching the session's `app.current_user_id`.
-- **JWT Authentication**: Secure, stateless authentication using ASP.NET Core Identity.
-- **SignalR**: Real-time WebSocket notifications when tasks are assigned.
-- **Clean DTO Architecture**: Demonstrates the DTO pattern by using lightweight `TaskSummaryDto` for lists and detailed `TaskDto` for single-item views, optimizing payload size and data encapsulation.
-- **Generic CRUD & AOP**: Uses a generic repository/service pattern and Aspect-Oriented Programming (EF Core Interceptors and Action Filters) for cross-cutting concerns.
+*(Note: Test credentials can be created via the Register page, or you can use the built-in Demo Role Swapper on the Profile page after registering).*
 
-### Frontend
-- **Service-Oriented Architecture (SOA)**: Business logic and API communication are encapsulated in singleton services.
-- **RxJS State Management**: Services expose state via Observables, providing a reactive and highly decoupled UI.
-- **Radix UI & Tailwind CSS**: Accessible, unstyled primitives paired with modern utility-first styling.
+---
+
+## 🏗️ Architecture & Technical Highlights
+
+This project is driven by a series of **Architecture Decision Records (ADRs)** located in the `docs/architecture/adrs/` directory. Key highlights include:
+
+### Backend (.NET 10 Web API)
+- **PostgreSQL Row Level Security (RLS)**: Data isolation is enforced at the database engine level via EF Core Interceptors. Accidental data leaks are impossible as the DB rejects queries not matching the session's `app.current_user_id` or `app.user_role`.
+- **Granular Roles & Permissions**: Implemented a robust RBAC system with `Admin`, `User`, and `ReadOnly` roles. Permissions are embedded in JWT claims and enforced across the stack.
+- **Clean DTO Architecture**: Strict separation of concerns using AutoMapper. Internal EF Core entities are never exposed. We use lightweight `TaskSummaryDto` for lists and detailed `TaskDto` for single-item views.
+- **Generic CRUD & SOA**: Leverages a generic repository/service pattern (`ICrudRepository`, `ICrudService`) to minimize boilerplate while maintaining a strict Service-Oriented Architecture.
+- **Aspect-Oriented Programming (AOP)**: Uses Action Filters for declarative global exception handling (mapping exceptions to standard `ProblemDetails` responses).
+
+### Frontend (React 19 + Vite)
+- **Router-Driven Architecture**: Utilizes React Router v6 Data API (`createBrowserRouter`, `loader`). Data fetching and permission guards (`requirePermission`) happen *before* components render, eliminating layout shift and loading spinners.
+- **RxJS State Management**: Business logic and API communication are encapsulated in singleton services (`TaskService`, `AuthService`). Components subscribe to Observable streams for a reactive, decoupled UI.
+- **12-Factor App (Runtime Configuration)**: The frontend is built once and configured at runtime via a `config.json` file, adhering to the "Build once, deploy anywhere" principle.
+- **Modern UI/UX**: Built with **Tailwind CSS** and **shadcn/ui** (Radix UI primitives) for an accessible, beautiful, and responsive design.
+- **Internationalization (i18n)**: Fully integrated with **LinguiJS** for robust, macro-based translations.
+
+---
+
+## 📚 Documentation & Testing
+
+- **Architecture Decision Records (ADRs)**: A complete history of technical decisions is documented using VitePress. You can view the docs locally by running:
+  ```bash
+  cd docs
+  npm install
+  npm run docs:dev
+  ```
+- **API Testing**: A **Bruno** collection is provided in the `/bruno` directory, featuring pre-configured environments and automatic JWT token injection for seamless API exploration.
 
 ## 📝 Assumptions & Trade-offs
-- **Local Storage for JWT**: For this MVP, the JWT is stored in `localStorage`. In a high-security production app, `HttpOnly` cookies would be preferred to mitigate XSS risks.
-- **Auto-Migrations**: The app auto-migrates on startup in Development mode for a seamless reviewer experience. In production, migrations would be part of a CI/CD pipeline.
+- **Local Storage for JWT**: For this MVP demonstration, the JWT is stored in `localStorage`. In a strict production environment, `HttpOnly` cookies would be implemented to mitigate XSS risks.
+- **Auto-Migrations**: The API auto-migrates the database on startup to ensure a seamless reviewer experience. In a real-world scenario, migrations would be applied via a CI/CD pipeline.
 
 ## 📈 Scalability & Future Work
 - **Rich Text & Media**: The architecture is ready to support rich text content and blob storage (e.g., AWS S3) for media attachments.
-- **Microservices**: The clear separation of the Task and Notification logic makes it easy to split these into microservices if needed.
 - **Caching**: Implement Redis for distributed caching of frequent queries.
-- **Testing**: Expand integration test coverage to include SignalR hubs and RLS policy edge cases.
-
-## 🛠️ API Testing
-A **Bruno** collection is provided in the `/bruno` directory. It includes pre-configured environments for automatic token injection after login.
+- **Testing**: Expand integration test coverage to include RLS policy edge cases.
