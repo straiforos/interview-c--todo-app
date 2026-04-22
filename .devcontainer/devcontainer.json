@@ -1,5 +1,5 @@
 {
-  "name": "TaskFlow App v2",
+  "name": "TODO Interview Take Home App",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
@@ -20,6 +20,8 @@
     }
   },
   "remoteUser": "vscode",
+  "overrideCommand": false,
+  "runServices": ["app", "ui", "db"],
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "forwardPorts": [5000, 5173, 5432],
   "portsAttributes": {

@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Fix potential shell issues
+export SHELL=/bin/bash
+
 # Initialize backend .env
 if [ ! -f TaskManagement.Api/.env.development ]; then
     echo "Initializing TaskManagement.Api/.env.development"

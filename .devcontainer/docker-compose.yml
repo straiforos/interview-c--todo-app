@@ -3,11 +3,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    init: true
     command: sleep infinity
     volumes:
       - ..:/workspace:cached
-    depends_on:
-      - db
     environment:
       - ConnectionStrings__DefaultConnection=Host=db;Database=taskdb;Username=postgres;Password=postgres
       - Jwt__Key=DevelopmentSecretKey_ChangeThisInProduction_MustBeLongEnough
@@ -16,14 +15,13 @@ services:
 
   ui:
     image: node:24-slim
-    command: sh -c "cd /workspace/TaskManagement.Client && npm install && npm run dev -- --host"
+    command: bash /workspace/.devcontainer/start-ui.sh
+    network_mode: service:app
     volumes:
       - ..:/workspace:cached
     working_dir: /workspace/TaskManagement.Client
     environment:
       - VITE_API_URL=http://localhost:5000/api
-    depends_on:
-      - app
 
   db:
     image: postgres:18-alpine
