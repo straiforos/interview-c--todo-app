@@ -25,7 +25,7 @@ features:
 
 ## 📸 Application Preview
 
-### Role-Based Access Control (Admin; Deleted Permissions)
+### Role-Based Access Control (Admin; Delete Permissions)
 ![Admin vs ReadOnly Role](./assets/admin-readonly-role.gif)
 
 ### Login & ReadOnly Role (View Only Permissions)
